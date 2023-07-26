@@ -31,11 +31,11 @@ class ActivoController extends Controller
         ->paginate(10); 
         
         
-        $ambiente= Ambiente::where('ambientes.activo',1) 
+        $ambiente= Ambiente::where('ambientes.activo',1)->orderBy('ambientes.nomambiente')  
         ->get();   
-        $grupo= ActivoGrupo::where('activo_grupos.activo',1) 
+        $grupo= ActivoGrupo::where('activo_grupos.activo',1)->orderBy('activo_grupos.nomgrupo') 
         ->get();   
-        $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1) 
+        $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1)->orderBy('activo_auxiliars.nomauxiliar')  
         ->get(); 
 
         $idactivolast = Activo::latest()->first();
@@ -70,35 +70,23 @@ class ActivoController extends Controller
         ->paginate(10); 
         
         
-        $ambiente= Ambiente::where('ambientes.activo',1) 
+        $ambiente= Ambiente::where('ambientes.activo',1)->orderBy('ambientes.nomambiente') 
         ->get();   
-        $grupo= ActivoGrupo::where('activo_grupos.activo',1) 
+        $grupo= ActivoGrupo::where('activo_grupos.activo',1)->orderBy('activo_grupos.nomgrupo') 
         ->get();   
-        $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1) 
+        $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1)->orderBy('activo_auxiliars.nomauxiliar') 
         ->get(); 
 
 
-        $users= User::select("users.id", 
-        DB::raw("CONCAT(users.name,' ',users.ap,' ',users.am) as full_name"),
+        $users= User::select("users.id",  
         "users.name",
         "users.ap",
-        "users.am",
-        "users.ci",
-        "users.dir",
-        "users.cel",
-        "users.fecnac",
-        "users.fecin",
-        "users.email",
-        "rols.idrol", 
-        DB::raw("rols.name as nomrol"),
-        "unidads.idu", 
-        DB::raw("unidads.name as nomuni"),
-        )
-        ->join("rols","rols.idrol","=","users.idrol")
-        ->join("unidads","unidads.idu","=","users.idu")
-        ->where('users.activo',1)
-        ->where('rols.activo',1)
-        ->where('unidads.activo',1)
+        "users.am",   
+        DB::raw("ambientes.nomambiente as nomuni")
+        ) 
+        ->join("ambientes","ambientes.idambiente","=","users.idu")
+        ->where('users.activo',1) 
+        ->where('ambientes.activo',1)
         ->orderBy('users.id')
         ->get(); 
 
@@ -118,6 +106,7 @@ class ActivoController extends Controller
             'status' => session('status'),
         ]);
     }
+   
     public function create()
     {
         //
@@ -128,6 +117,19 @@ class ActivoController extends Controller
      */
     public function store(Request $request)
     { 
+        $request->validate([ 
+            'codactivo' => 'required|string|max:255',
+            'idambiente' => 'required|numeric',
+            'idgrupo' => 'required|numeric',
+            'idauxiliar' => 'required|numeric', 
+            'fechaingreso' => 'required|string|max:255', 
+            'costo' => 'required|numeric', 
+            'descripcion' => 'required|string|max:255',
+            'marca' => 'required|string|max:255',
+            'serie' => 'required|string|max:255',
+            'imagen' => 'required|string' 
+        ]);
+        
         $Activo = Activo::create($request->input());  
         $Activo->save();
         return redirect('Activo');

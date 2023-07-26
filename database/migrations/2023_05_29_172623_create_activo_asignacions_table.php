@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('activo_asignacions', function (Blueprint $table) {
             $table->increments('idasignacion'); 
             $table->integer('idactivo')->unsigned(); 
-            $table->integer('iduser');  
+            $table->bigInteger('iduser')->unsigned();   
             $table->date('fechaini'); 
             $table->integer('estadoini')->comment('1-bueno, 2-regular, 3-malo');
             $table->string('obs',100)->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('activo')->default(1);
             $table->timestamps();
             $table->foreign('idactivo')->references('idactivo')->on('activos');
-          
+            $table->foreign('iduser')->references('id')->on('users');
         });
     }
 

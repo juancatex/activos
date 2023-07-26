@@ -18,11 +18,11 @@ return new class extends Migration
             $table->integer('idgrupo')->unsigned(); 
             $table->integer('idauxiliar')->unsigned(); 
             $table->date('fechaingreso');
-            $table->float('costo'); 
+            $table->double('costo', 15, 2); 
             $table->string('descripcion',150)->nullable();
             $table->string('marca',20)->nullable();
             $table->string('serie',20)->nullable();
-            $table->string('imagen')->nullable();
+            $table->longText('imagen'); 
             $table->float('residual')->default(0)->nullable();
             $table->string('obs',100)->nullable(); 
             $table->date('fechabaja')->nullable();

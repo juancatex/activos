@@ -1,10 +1,6 @@
 <script setup>
-    import { ref,  onMounted, onUnmounted,computed  } from 'vue'; 
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+    import { ref,  onMounted, onUnmounted,computed  } from 'vue';  
+import DropdownLink from '@/Components/DropdownLink.vue'; 
 import {
     Link,usePage 
 } from '@inertiajs/vue3';
@@ -175,14 +171,7 @@ const page = usePage()
                                     <li v-for="valuelista in valuegrupo.lista" :key="valuelista.id" class="sidebar-item" :class="{'selected':valuelista.active}"  @click="clickMenu('menu-'+valuegrupo.id+'-'+valuelista.id)"> 
                                         
                                                <a :id="'menu-'+valuegrupo.id+'-'+valuelista.id" class="sidebar-link titulomenu has-arrow waves-effect waves-dark" :class="{'active':valuelista.active}" href="javascript:void(0)"
-                                                aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-home feather-icon">
-                                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                                </svg><span class="hide-menu">{{valuelista.menu}}
-                                                   </span>
+                                                aria-expanded="false"><span style="padding-right: 7px;" class="material-symbols-outlined">{{valuelista.icon}} </span><span class="hide-menu">{{valuelista.menu}}  </span>
                                                 </a>
  
                                                

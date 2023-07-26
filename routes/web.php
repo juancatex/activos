@@ -41,11 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/Activos', [ActivoController::class, 'ruta'])->name('activo.lista'); 
+    Route::get('/Activos', [ActivoController::class, 'ruta'])->name('activo.lista');  
     Route::post('activodestroy', [ActivoController::class, 'desabilitar'])->name('activodestroy');
     Route::resource('Activo', ActivoController::class);
 
-    Route::resource('ActivoAsig', ActivoAsignacionController::class);
+    Route::resource('ActivoAsig', ActivoAsignacionController::class); 
+    Route::get('/ActivosAsig', [ActivoAsignacionController::class, 'index'])->name('activo.asig'); 
 });
 
 require __DIR__.'/auth.php';

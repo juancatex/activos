@@ -4,17 +4,78 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivoAsignacion;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\Ambiente;
+use App\Models\ActivoGrupo;
+use App\Models\ActivoAuxiliar;  
+use App\Clases\Menulist;
+use Illuminate\Support\Facades\DB;
+use App\Models\Activo;
+use App\Models\User;
 
 class ActivoAsignacionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $listamenus = new Menulist; 
+        $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar",$raw)
+        ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
+        ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")
+        ->where('ambientes.activo',1)
+        ->where('activo_grupos.activo',1)
+        ->where('activo_auxiliars.activo',1)
+        ->where('activos.activo',1) ; 
+        if(empty($request->search)){
+            $activos= $activos->orderBy('activos.idactivo') ; 
+        }else{
+            $activos= $activos->where('activos.codactivo','like',"%$request->search%")
+            ->orderBy('activos.idactivo') ; 
+        }
+        
 
+        $activos= $activos->paginate(10); 
+        
+        $ambiente= Ambiente::where('ambientes.activo',1)->orderBy('ambientes.nomambiente')  
+        ->get();   
+        $grupo= ActivoGrupo::where('activo_grupos.activo',1)->orderBy('activo_grupos.nomgrupo') 
+        ->get();   
+        $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1)->orderBy('activo_auxiliars.nomauxiliar') 
+        ->get(); 
+        
+        $users= User::select("users.id",  
+        "users.name",
+        "users.ap",
+        "users.am", 
+        "users.idu",  
+        DB::raw("ambientes.nomambiente as nomuni")
+        ) 
+        ->join("ambientes","ambientes.idambiente","=","users.idu")
+        ->where('users.activo',1) 
+        ->where('ambientes.activo',1)
+        ->orderBy('users.id')
+        ->get(); 
+
+
+        $idactivolast = Activo::latest()->first();
+
+        return Inertia::render('Activos/AsigActivo', [
+            'menus' => $listamenus->Getmenus(empty($request->touch)?'0-0-0':$request->touch),
+            'activos' => $activos,
+            'users' =>  $users,
+            'ambiente' => $ambiente,
+            'grupo' => $grupo,
+            'aux' => $aux,
+            'lastid'=>$idactivolast!=null?$idactivolast->idactivo+1:1,
+            'status' => session('status'),
+        ]);
+    }
+  
+  
     /**
      * Show the form for creating a new resource.
      */
@@ -28,6 +89,13 @@ class ActivoAsignacionController extends Controller
      */
     public function store(Request $request)
     { 
+        $request->validate([  
+            'idactivo' => 'required|numeric',
+            'iduser' => 'required|numeric',  
+            'fechaini' => 'required|string|max:255', 
+            'estadoini' => 'required|numeric',  
+            'obs' => 'required|string' 
+        ]);
         $Activo = ActivoAsignacion::create([
             'idactivo' => $request->idactivo,
             'iduser' => $request->iduser,
@@ -35,16 +103,13 @@ class ActivoAsignacionController extends Controller
             'estadoini' => $request->estadoini,
             'obs' => $request->obs 
         ]);  
-        return redirect('Activo');
+        return redirect('ActivoAsig');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ActivoAsignacion $activoAsignacion)
-    {
-        //
-    }
+  
 
     /**
      * Show the form for editing the specified resource.

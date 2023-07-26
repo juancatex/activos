@@ -8,7 +8,8 @@ use Inertia\Response;
 use App\Clases\Menulist;
 use App\Models\User;
 use App\Models\Rol;
-use App\Models\Unidad;
+// use App\Models\Unidad;
+use App\Models\Ambiente;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -117,22 +118,24 @@ class UserController extends Controller
         "users.fecin",
         "users.email",
         "rols.idrol", 
-        DB::raw("rols.name as nomrol"),
-        "unidads.idu", 
-        DB::raw("unidads.name as nomuni"),
+        DB::raw("rols.name as nomrol"), 
+        DB::raw("ambientes.idambiente as idu"),
+        DB::raw("ambientes.nomambiente as nomuni"),
         )
         ->join("rols","rols.idrol","=","users.idrol")
-        ->join("unidads","unidads.idu","=","users.idu")
+        ->join("ambientes","ambientes.idambiente","=","users.idu")
         ->where('users.activo',1)
         ->where('rols.activo',1)
-        ->where('unidads.activo',1)
+        ->where('ambientes.activo',1)
         ->orderBy('users.id')
         ->paginate(10);  
         $roles= Rol::where('rols.activo',1) 
         ->get();  
 
-        $unidades= Unidad::where('unidads.activo',1) 
-        ->get();  
+        // $unidades= Unidad::where('unidads.activo',1) 
+        // ->get();  
+        $unidades= Ambiente::where('ambientes.activo',1)->orderBy('ambientes.nomambiente')  
+        ->get(); 
 
         return Inertia::render('Profile/Users', [
             'menus' => $listamenus->Getmenus($request->touch),
@@ -160,21 +163,23 @@ class UserController extends Controller
         "users.email",
         "rols.idrol", 
         DB::raw("rols.name as nomrol"),
-        "unidads.idu", 
-        DB::raw("unidads.name as nomuni"),
+        DB::raw("ambientes.idambiente as idu"),
+        DB::raw("ambientes.nomambiente as nomuni"),
         )
         ->join("rols","rols.idrol","=","users.idrol")
-        ->join("unidads","unidads.idu","=","users.idu")
+        ->join("ambientes","ambientes.idambiente","=","users.idu")
         ->where('users.activo',1)
         ->where('rols.activo',1)
-        ->where('unidads.activo',1)
+        ->where('ambientes.activo',1)
         ->orderBy('users.id')
         ->paginate(10);  
         $roles= Rol::where('rols.activo',1) 
         ->get();  
 
-        $unidades= Unidad::where('unidads.activo',1) 
-        ->get();  
+        // $unidades= Unidad::where('unidads.activo',1) 
+        // ->get();  
+        $unidades= Ambiente::where('ambientes.activo',1)->orderBy('ambientes.nomambiente')  
+        ->get(); 
 
         return Inertia::render('Profile/Users', [
             'menus' => $listamenus->Getmenus('0-0-0'),

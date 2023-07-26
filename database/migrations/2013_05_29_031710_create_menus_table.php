@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('idm');
             $table->string('nommenu');
             $table->string('descripcionmenu'); 
+            $table->string('icon');
             $table->boolean('activo')->default(1);
             $table->timestamps();
         });

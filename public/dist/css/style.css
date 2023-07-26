@@ -13909,7 +13909,7 @@ Notify
   align-items: center;
   position: relative;
   line-height: 25px;
-  font-size: 16px;
+  font-size: 14px;
   opacity: 0.6;
   color: #fff;
   border-left: 3px solid transparent;
@@ -16910,7 +16910,7 @@ html[dir=rtl] #main-wrapper[data-layout=horizontal][data-boxed-layout=boxed] .pa
 #main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link.active, #main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link.active {
   color: #263238;
   font-weight: bold;
-  border-bottom: 1px solid deepskyblue;
+  /* border-bottom: 1px solid deepskyblue; */
 }
 #main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link.active i, #main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin6] .sidebar-nav ul .sidebar-item .first-level .sidebar-item .sidebar-link.active i {
   color: #263238;

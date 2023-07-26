@@ -22,13 +22,13 @@ Class Menulist
         $grupos = array();
         foreach($rolvistagrupo as $grupo) 
         {    
-            $rolvistamenus= RolVista::select("rol_vistas.idm","menus.nommenu") 
+            $rolvistamenus= RolVista::select("rol_vistas.idm","menus.nommenu","menus.icon") 
             ->join("menus","menus.idm","=","rol_vistas.idm")
             ->where('rol_vistas.idrol',Auth::user()->idrol)
             ->where('rol_vistas.idg',$grupo->idg)
             ->where('menus.activo',1)
             ->orderBy('rol_vistas.idm')
-            ->groupBy('rol_vistas.idm','menus.nommenu')
+            ->groupBy('rol_vistas.idm','menus.nommenu',"menus.icon")
             ->get(); 
             $menusarray = array();
             foreach($rolvistamenus as $menus) 
@@ -48,7 +48,7 @@ Class Menulist
                     array_push($vistasarray,array("id"=> $vistas->idv,"nombre"=>$vistas->nomvista,"active"=>($grupo->idg==$buscararray[0]&&$menus->idm==$buscararray[1]&&$vistas->idv==$buscararray[2]?true:false),"route"=>$vistas->ruta ));
                 }
 
-                array_push($menusarray,array( "id"=>$menus->idm, "menu"=>$menus->nommenu,"active"=>($grupo->idg==$buscararray[0]&&$menus->idm==$buscararray[1]?true:false), "routes"=>$vistasarray )); 
+                array_push($menusarray,array( "id"=>$menus->idm, "icon"=>$menus->icon,"menu"=>$menus->nommenu,"active"=>($grupo->idg==$buscararray[0]&&$menus->idm==$buscararray[1]?true:false), "routes"=>$vistasarray )); 
             }
             
             array_push($grupos,array( "id"=>$grupo->idg, "grupo"=>$grupo->nomgrupo,"active"=>($grupo->idg==$buscararray[0]?true:false), "lista"=>$menusarray )); 

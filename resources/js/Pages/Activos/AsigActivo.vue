@@ -1,7 +1,7 @@
 <script setup>
 import Menu from '@/Layouts/menu.vue'; 
-import { Head,Link,useForm } from '@inertiajs/vue3'; 
-import Pagination from '@/Components/Paginations.vue';
+import { Head,Link,useForm,router } from '@inertiajs/vue3'; 
+import Pagination from '@/Components/Paginations.vue'; 
 import TextInput from '@/Components/TextInput.vue';
 import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
 import Cropp from '@/Components/CropperImage.vue';
@@ -10,10 +10,13 @@ import SelectInputAuxiliar from '@/Components/SelectInputAuxiliar.vue';
 import SelectInputUsers from '@/Components/SelectInputUsers.vue';
 import SelectInputEstados from '@/Components/SelectInputEstados.vue';
 import Swal from 'sweetalert2';
-import {ref,nextTick,onMounted,computed} from 'vue'; 
+import {ref,nextTick,watch,computed} from 'vue'; 
+import { debounce,findIndex,reduce } from 'lodash';
 import moment from 'moment';
 const nameinput=ref(null); 
 const titulo=ref('');
+const searchField=ref('');
+const usuarios=ref([]);
 const estadoasignacion=ref([{'id':1,'name':'Bueno'},{'id':2,'name':'Regular'},{'id':3,'name':'Malo'}]);
 const operacion=ref(1);  
 const form = useForm({
@@ -22,7 +25,7 @@ const form = useForm({
     idambiente: null,
     idgrupo: null,
     idauxiliar: null,
-    fechaingreso: moment(new Date()).format('YYYY-MM-DD'),
+    fechaingreso: '',
     costo:null, 
     descripcion: '',
     marca: '',
@@ -39,10 +42,14 @@ const formasig = useForm({
     fechaini: moment(new Date()).format('YYYY-MM-DD'),
     obs: '',
     estadoini: null    
-});
+}); 
 
-const codigo = computed(() => {
-    
+watch(searchField, debounce(() => {
+// router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
+router.get('ActivoAsig', {search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos','users']})
+}, 300));
+
+const codigo = computed(() => { 
     return 'MUG'+(form.idambiente!=null?(form.idambiente>9?form.idambiente:'0'+form.idambiente):'')+
    (form.idgrupo!=null? (form.idgrupo>9?form.idgrupo:'0'+form.idgrupo):'')+
     (form.idauxiliar!=null?(form.idauxiliar>9?form.idauxiliar:'0'+form.idauxiliar):'')+
@@ -98,15 +105,34 @@ const openModal=(op,idactivo,codactivo,idambiente,idgrupo,idauxiliar,fechaingres
     }
     $('#staticBackdrop').modal('show'); 
 };
-const openModalAsig=(idactivo,codactivo)=>{ 
-    nextTick(()=>nameinput.value.focus()); 
+const openModalAsig=(idactivo,codactivo,idambiente)=>{ 
+    usuarios.value=getuser(props.users,idambiente);
+    console.log(usuarios);
+const contador = reduce(props.users, function (result, value, key) {   if (value.idu == idambiente) {  result++;  }  return result; }, 0);
+if(contador>0){
+ nextTick(()=>nameinput.value.focus()); 
     titulo.value='Crear Asignación';
     formasig.clearErrors();
     formasig.reset();
     formasig.idactivo=idactivo;
     formasig.codactivo=codactivo;
     $('#modalasignacion').modal('show'); 
+}else{
+    Swal.fire({
+  icon: 'error', 
+  text: 'Verifique que algun funcionario este designado al area funcional correspondiente.' });
+}
+   
 };
+function getuser(users,idambiente) {
+    return reduce(users, function (result, value, key) {
+
+        if (value.idu == idambiente) {
+            result.push(value);
+        }
+        return result;
+    },[]);
+}
 const closeModal=()=>{ 
     form.reset();
     formasig.reset();
@@ -145,18 +171,18 @@ alerta.fire({
     }
 );
 }; 
-      onMounted(() => {
-       
-      });
+      
+ 
+   
 </script>
 
 <template>
-    <Head title="Catalogo" /> 
+    <Head title="Asignación" /> 
     <Menu :listmenus="menus">
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-md-5 align-self-center">
-              <!-- <h3 class="page-title">Activos</h3> -->
+                <!-- <h3 class="page-title">Activos</h3> -->
               <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
@@ -165,7 +191,7 @@ alerta.fire({
                          </Link>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                         Catalogo
+                        Asignación
                     </li>
                   </ol>
                 </nav>
@@ -180,10 +206,7 @@ alerta.fire({
               "
             >
               <div class="d-flex"> 
-                <button class="btn btn-success" @click="openModal(1)">
-                  <i   class="fill-white ti-plus"></i>
-                  Registrar nuevo Activo
-                </button>
+                
               </div>
             </div>
           </div>
@@ -197,6 +220,20 @@ alerta.fire({
                   <h4 class="card-title mb-0">Listado general de los activos</h4>
                 </div>
                 <div class="card-body"> 
+                    <div class="col-md-6 ">
+                      
+
+
+                                            <div class="form-floating mb-3"> 
+                                                    <TextInput class="form-control" id="search" ref="nameinput" v-model="searchField" type="text" >
+                                                    </TextInput> 
+                                                <label for="serie">Buscar por codigo</label> 
+                                            </div>
+
+                    </div>
+
+
+
                   <div class="table-responsive">
                     <table
                       id="zero_config"
@@ -206,11 +243,11 @@ alerta.fire({
                         <tr> 
                           <th>Activo</th>
                           <th>Cogido</th>
-                          <th>Descripción</th>
-                          <th>Ambiente</th>
+                          <!-- <th>Descripción</th> --> 
                           <th>Grupo</th>
                           <th>Auxiliar</th> 
                           <th>Fecha Ingreso</th> 
+                          <th>Ambiente</th>
                           <th>Asignación</th> 
                           <th>Operaciones</th>
                         </tr>
@@ -219,32 +256,25 @@ alerta.fire({
                         <tr v-for="activo in activos.data" :key="activo.idactivo">
                             <td class="align-middle" style="text-align: center;"><img :src="activo.imagen" alt="activo" width="75"></td>
                             <td class="align-middle" style="text-align: center;"><b>{{ activo.codactivo}}</b></td>
-                            <td class="align-middle" style="text-align: center;">{{ activo.descripcion }}</td>
-                            <td class="align-middle" style="text-align: center;">{{ activo.nomambiente }}</td>
+                            <!-- <td class="align-middle" style="text-align: center;">{{ activo.descripcion }}</td> --> 
                             <td class="align-middle" style="text-align: center;">{{ activo.nomgrupo }}</td>
                             <td class="align-middle" style="text-align: center;">{{ activo.nomauxiliar }}</td>
                             <td class="align-middle" style="text-align: center;">{{ activo.fechaingreso }}</td>
+                            <td class="align-middle" style="text-align: center;">{{ activo.nomambiente }}</td>
                             <td :class="activo.asig?'align-middle':'align-middle text-warning'" style="text-align: center;">{{ activo.asig?activo.asig:'No asignado' }}</td>  
                             <td class="button-group">  
-                                   <button class="btn btn-warning"
-                                        @click="openModal(2,activo.idactivo,activo.codactivo,activo.idambiente,activo.idgrupo,activo.idauxiliar,activo.fechaingreso,
-                                        activo.costo,activo.descripcion,activo.marca,activo.serie,activo.imagen,activo.obs)">
-                                        <i class="ti-book"></i>
-                                    </button> 
-                                
-                                    <button v-if="!activo.asig" class="btn btn-danger" @click="eliminarActivo(activo.idactivo)">
-                                        <i class="ti-close"></i>
-                                    </button>
-
-                                    <!-- <button v-if="!activo.asig" class="btn btn-info"
-                                        @click="openModalAsig(activo.idactivo,activo.codactivo)">
+                                    
+                                    <button v-if="!activo.asig" class="btn btn-info"
+                                        @click="openModalAsig(activo.idactivo,activo.codactivo,activo.idambiente)">
                                         <i class="ti-user"></i>
                                     </button> 
 
                                     <button v-else class="btn btn-outline-info  " >
                                         <i class="ti-file"></i>
-                                    </button>  -->
-                                   
+                                    </button> 
+                                 
+
+                                    
                             </td> 
                         </tr>
                       </tbody>
@@ -281,7 +311,7 @@ alerta.fire({
                                         </div>
                                         <div class="col-md-4">
                                             <div :class="form.errors.idambiente?'  mb-3 has-danger':'  mb-3'"> 
-                                                <label for="idambiente">Unidad Funcional</label> 
+                                                <label for="idambiente">Ambiente</label> 
                                                     <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="form.idambiente" type="text" :options="ambiente">
                                                     </SelectInputAmbiente>  
                                                 <small v-show="form.errors.idambiente" class="form-control-feedback">
@@ -447,7 +477,7 @@ alerta.fire({
                                         <div class="col-md-12">
                                             <div :class="formasig.errors.iduser?'  mb-3 has-danger':'  mb-3'"> 
                                                 <label for="iduser">Personal</label> 
-                                                    <SelectInputUsers class="form-select form-select-lg mb-3" id="iduser" v-model="formasig.iduser" type="text" :options="users">
+                                                    <SelectInputUsers class="form-select form-select-lg mb-3" id="iduser" v-model="formasig.iduser" type="text" :options="usuarios">
                                                     </SelectInputUsers>  
                                                 <small v-show="formasig.errors.iduser" class="form-control-feedback">
                                                     {{formasig.errors.iduser}}

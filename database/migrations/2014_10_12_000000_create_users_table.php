@@ -29,7 +29,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('idrol')->references('idrol')->on('rols');
-            $table->foreign('idu')->references('idu')->on('unidads');
+            // $table->foreign('idu')->references('idu')->on('unidads');
+            $table->foreign('idu')->references('idambiente')->on('ambientes');
         });
     }
 

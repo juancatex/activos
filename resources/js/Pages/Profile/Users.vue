@@ -4,6 +4,7 @@ import { Head,Link,useForm } from '@inertiajs/vue3';
 import Pagination from '@/Components/Paginations.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SelectInputUnidad from '@/Components/SelectInputUnidad.vue';
+import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
 import SelectInputrol from '@/Components/SelectInputrol.vue';
 import Swal from 'sweetalert2';
 import {ref,nextTick} from 'vue';
@@ -48,6 +49,7 @@ const openModal=(op,iduser,name,ap,am,email,ci,cel,dir,fecnac,fecin,idrol,idu)=>
     operacion.value=op; 
     if(op==1){
         titulo.value='Crear personal';
+        form.clearErrors();
         form.reset();
     }else{
         titulo.value='Modificar personal';
@@ -326,9 +328,11 @@ alerta.fire({
                                         </div>
                                         <div class="col-md-6">
                                             <div :class="form.errors.idu?'  mb-3 has-danger':'  mb-3'"> 
-                                                <label for="idu">Unidad</label> 
-                                                    <SelectInputUnidad class="form-select form-select-lg mb-3" id="idu" v-model="form.idu" type="text" :options="unidades">
-                                                    </SelectInputUnidad>  
+                                                <label for="idu">Unidad Funcional</label> 
+                                                    <!-- <SelectInputUnidad class="form-select form-select-lg mb-3" id="idu" v-model="form.idu" type="text" :options="unidades">
+                                                    </SelectInputUnidad>   -->
+                                                    <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idu" v-model="form.idu" type="text" :options="unidades">
+                                                    </SelectInputAmbiente>  
                                                 <small v-show="form.errors.idu" class="form-control-feedback">
                                                     {{form.errors.idu}}
                                                     </small> 
