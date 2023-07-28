@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,7 +39,8 @@ class DatabaseSeeder extends Seeder
         DB::table('menus')->insert(['idm'=>3,'icon'=>'cancel','nommenu'=>'Devolución de Activos','descripcionmenu'=>'Devolución de Activos']);  
         DB::table('menus')->insert(['idm'=>4,'icon'=>'home','nommenu'=>'Empresa','descripcionmenu'=>'Empresa']);  
         DB::table('menus')->insert(['idm'=>5,'icon'=>'disabled_by_default','nommenu'=>'Baja de Activos','descripcionmenu'=>'Baja de Activos']);  
- 
+        DB::table('menus')->insert(['idm'=>6,'icon'=>'swap_vert','nommenu'=>'Depreciación de Activos','descripcionmenu'=>'Depreciación de Activos']);  
+        
  
         DB::table('vistas')->insert(['idv'=>1,'nomvista'=>'Información','ruta'=>'empresa.personal']); //Empresa
         DB::table('vistas')->insert(['idv'=>2,'nomvista'=>'Unidades','ruta'=>'empresa.personal']); //Empresa
@@ -48,6 +50,7 @@ class DatabaseSeeder extends Seeder
         DB::table('vistas')->insert(['idv'=>6,'nomvista'=>'Asignación','ruta'=>'activo.asig']); 
         DB::table('vistas')->insert(['idv'=>7,'nomvista'=>'Devolución','ruta'=>'activo.dev']); 
         DB::table('vistas')->insert(['idv'=>8,'nomvista'=>'Bajas de activos','ruta'=>'activo.baja']); 
+        DB::table('vistas')->insert(['idv'=>9,'nomvista'=>'Depreciación de activos','ruta'=>'activo.depre']); 
         
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>1]);
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>2]);
@@ -58,6 +61,7 @@ class DatabaseSeeder extends Seeder
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>2,'idv'=>6]); 
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>3,'idv'=>7]); 
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>5,'idv'=>8]); 
+        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>6,'idv'=>9]); 
 
 
         // DB::table('unidads')->insert(['idu'=>1,'name'=>'Gerencia','descripcionuni'=>'Gerencia']);  
@@ -96,48 +100,39 @@ class DatabaseSeeder extends Seeder
         DB::table('ambientes')->insert(['codambiente'=>'29','nomambiente'=>'COMITE ELECTORAL']); 
         DB::table('ambientes')->insert(['codambiente'=>'30','nomambiente'=>'DEPOSITO']); 
 
-
-
-        DB::table('activo_grupos')->insert(['codgrupo'=>'01','nomgrupo'=>'EDIFICACIONES','vida'=>40 ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'02','nomgrupo'=>'MUEBLES Y ENSERES DE OFICINA','vida'=>10]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'03','nomgrupo'=>'MAQUINARIA EN GENERAL' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'04','nomgrupo'=>'EQUIPO MEDICO Y DE LABORATORIO' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'05','nomgrupo'=>'EQUIPO DE COMUNICACIONES','vida'=>8]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'06','nomgrupo'=>'EQUIPO EDUCACIONAL Y RECREATIVO','vida'=>8]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'07','nomgrupo'=>'BARCOS Y LANCHAS EN GENERAL' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'08','nomgrupo'=>'VEHICULOS AUTOMOTORES','vida'=>5 ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'09','nomgrupo'=>'AVIONES','vida'=>5 ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'10','nomgrupo'=>'MAQUINARIA PARA LA CONSTRUCCION' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'11','nomgrupo'=>'MAQUINARIA AGRICOLA' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'12','nomgrupo'=>'ANIMALES DE TRABAJO' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'13','nomgrupo'=>'HERRAMIENTAS EN GENERAL','vida'=>4]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'14','nomgrupo'=>'REPRODUCTORES Y HEMBRAS DE PEDIGREE' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'15','nomgrupo'=>'EQUIPOS DE COMPUTACION','vida'=>4]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'16','nomgrupo'=>'CANALES DE REGADIO Y POZOS' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'17','nomgrupo'=>'ESTANQUES, BAÑADEROS Y ABREVADEROS' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'18','nomgrupo'=>'ALAMBRADOS, TRANQUERAS Y VALLAS' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'19','nomgrupo'=>'VIVIENDAS PARA EL PERSONAL' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'20','nomgrupo'=>'MUEBLES Y ENSERES EN VIVIENDAS DE PERSONAL','vida'=>10]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'21','nomgrupo'=>'SILOS, ALMACENES Y GALPONES' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'22','nomgrupo'=>'TINGLADOS Y COBERTIZOS DE MADERA' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'23','nomgrupo'=>'TINGLADOS Y COBERTIZOS DE METAL' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'24','nomgrupo'=>'INSTALACION DE ELECTRIFICACION Y TELEFONIA RURAL' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'25','nomgrupo'=>'CAMINOS INTERIORES' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'26','nomgrupo'=>'CAÑA DE AZUCAR' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'27','nomgrupo'=>'VIDES' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'28','nomgrupo'=>'FRUTALES' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'29','nomgrupo'=>'LINEAS DE RECOLECCION DE LA INDUSTRIA PETROLERA' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'30','nomgrupo'=>'POZOS PETROLEROS' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'31','nomgrupo'=>'EQUIPOS DE CAMPO DE LA INDUSTRIA PETROLERA' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'32','nomgrupo'=>'PLANTA DE PROCESAMIENTO DE LA INDUSTRIA PETROLERA' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'33','nomgrupo'=>'DUCTOS DE LA INDUSTRIA PETROLERA' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'34','nomgrupo'=>'TERRENOS','vida'=>40 ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'36','nomgrupo'=>'OTROS ACTIVOS FIJOS' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'37','nomgrupo'=>'ACTIVOS INTANGIBLES' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'38','nomgrupo'=>'EQUIPO E INSTALACIONES' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'39','nomgrupo'=>'OTRAS PLANTACIONES' ]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'40','nomgrupo'=>'ACTIVOS MUSEOLOGICOS Y CULTURALES' ]);  
-
+        DB::table('activo_grupos')->insert(['codgrupo'=>'01','nomgrupo'=>'Edificaciones','vida'=>40]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'02','nomgrupo'=>'Muebles y enseres de oficina','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'03','nomgrupo'=>'Maquinaria en general','vida'=>8]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'04','nomgrupo'=>'Equipos e instalaciones','vida'=>8]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'05','nomgrupo'=>'Barcos y lanchas en general','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'06','nomgrupo'=>'Vehículos automotores','vida'=>5]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'07','nomgrupo'=>'Aviones','vida'=>5]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'08','nomgrupo'=>'Maquinaria para la construcción','vida'=>5]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'09','nomgrupo'=>'Maquinaria agrícola','vida'=>4]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'10','nomgrupo'=>'Animales de trabajo','vida'=>4]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'11','nomgrupo'=>'Herramientas en general','vida'=>4]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'12','nomgrupo'=>'Reproductores y hembras pedigree puros por cruza','vida'=>8]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'13','nomgrupo'=>'Equipos de computación','vida'=>4]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'14','nomgrupo'=>'Canales de regadío y pozos','vida'=>20]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'15','nomgrupo'=>'Estanques, bañaderos y abrevaderos','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'16','nomgrupo'=>'Alambrados, tranqueras y vallas','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'17','nomgrupo'=>'Viviendas para el personal','vida'=>20]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'18','nomgrupo'=>'Muebles y enseres en las viviend para el personal','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'19','nomgrupo'=>'Silos, almacenes y galpones','vida'=>20]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'20','nomgrupo'=>'Tinglados y cobertizos de madera','vida'=>5]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'21','nomgrupo'=>'Tinglados y cobertizos de metal','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'22','nomgrupo'=>'Instalaciones de electrificación - Telefonía rural','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'23','nomgrupo'=>'Caminos interiores','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'24','nomgrupo'=>'Caña de azúcar','vida'=>5]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'25','nomgrupo'=>'Vides','vida'=>8]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'26','nomgrupo'=>'Frutales','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'27','nomgrupo'=>'Pozos Petroleros (ver inciso II del Art. 18° de este reglamento)','vida'=>5]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'28','nomgrupo'=>'Líneas de Recolección de industria Petrolera.','vida'=>5]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'29','nomgrupo'=>'Equipos de campo de la industria Petrolera','vida'=>8]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'30','nomgrupo'=>'Plantas de Procesamiento de Industria Petrolera','vida'=>8]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'31','nomgrupo'=>'Ductos de la industria petrolera','vida'=>10]);
+        
+ 
         DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'01','nomauxiliar'=>'ESCRITORIO DE MADERA']);
         DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'02','nomauxiliar'=>'ESTANTE DE MADERA']);
         DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'03','nomauxiliar'=>'MÁQUINA CALCULADORA']);
@@ -258,6 +253,7 @@ class DatabaseSeeder extends Seeder
         DB::table('activo_auxiliars')->insert(['idgrupo'=>20,'codauxiliar'=>'11','nomauxiliar'=>'COLCHACAMA']);
 
 
+
         DB::table('activo_motivos')->insert(['nommotivo'=>'Disposición definitiva de bienes']);
         DB::table('activo_motivos')->insert(['nommotivo'=>'Hurto, robo o pérdida']);
         DB::table('activo_motivos')->insert(['nommotivo'=>'Mermas y daño físico']);
@@ -281,6 +277,10 @@ class DatabaseSeeder extends Seeder
         $user->email = 'ddd@hotmail.com';
         $user->password = bcrypt('ddd');
         $user->save();
+ 
+        $path =Storage::disk('public')->path('ufv.sql');
+        $sql = file_get_contents($path);
+        DB::unprepared($sql);
        
     }
 }

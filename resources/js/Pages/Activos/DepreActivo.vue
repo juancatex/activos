@@ -1,0 +1,355 @@
+<script setup>
+import Menu from '@/Layouts/menu.vue'; 
+import { Head,Link,useForm,router } from '@inertiajs/vue3'; 
+import Pagination from '@/Components/Paginations.vue'; 
+import TextInput from '@/Components/TextInput.vue';
+import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
+import Cropp from '@/Components/CropperImage.vue';
+import SelectInputGgrupo from '@/Components/SelectInputGgrupo.vue';
+import SelectInputAuxiliar from '@/Components/SelectInputAuxiliar.vue';
+import SelectInputUsers from '@/Components/SelectInputUsers.vue';
+import SelectInputEstados from '@/Components/SelectInputEstados.vue';
+import Swal from 'sweetalert2';
+import {ref,nextTick,watch,computed} from 'vue'; 
+import { debounce,findIndex,reduce } from 'lodash';
+import moment from 'moment';
+const nameinput=ref(null); 
+const titulo=ref('');
+const searchField=ref('');
+const arrayDepreciaciones=ref([]);
+const usuarioprincipal=ref({});
+const estadoasignacion=ref([{'id':1,'name':'Bueno'},{'id':2,'name':'Regular'},{'id':3,'name':'Malo'}]);
+const operacion=ref(1);  
+const form = useForm({
+    idactivo:null,
+    codactivo: '',
+    idambiente: null,
+    idgrupo: null,
+    idauxiliar: null,
+    fechaingreso: '',
+    costo:null, 
+    descripcion: '',
+    marca: '',
+    serie: '',
+    imagen: '',
+    obs: ''        
+});
+
+const formasig = useForm({
+    idasignacion:null,
+    idactivo: null,
+    codactivo: '',
+    iduser: null,
+    fechaini: moment(new Date()).format('YYYY-MM-DD'),
+    obs: '',
+    estadoini: null    
+}); 
+
+watch(searchField, debounce(() => { 
+router.get('ActivoAsig', {search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos','activos']})
+}, 300));
+ 
+const props = defineProps({
+    menus: {
+        type: Object,
+    }, 
+    activos: {
+        type: Object,
+    },
+    ufvini: {
+        type: Object,
+    },
+    ufvfin: {
+        type: Object,
+    },
+        
+});
+ function  diastransc(fini,ffin){ //dias transcurridos
+            var fechaini = new Date(fini);
+            var fechafin = new Date(ffin);
+            return Math.round((fechafin.getTime()-fechaini.getTime())/86400000);
+        }
+        function tiempotransc(fini,ffin){
+            var aa=ffin.substr(0,4)-fini.substr(0,4);
+            var mm=ffin.substr(5,2)-fini.substr(5,2);
+            if(mm<0) {mm=12+mm; aa--;} 
+            return aa+'a'+' '+mm+'m';
+        }
+function formatomon(x){  //215451.325145 --> 215,451.32
+            if(x<0) x*=-1;
+            var num=Math.round(x*100)/100;
+            var cad=num.toString();
+            if(!cad.includes('.')) cad=cad+'.00';
+            cad=cad.split('').reverse();
+            if(cad[1]=='.') cad.unshift('0');
+            var arr=[]; var c=0;
+            for(var i=0;i<cad.length;i++){
+                if(i<3) arr.push(cad[i]);
+                else {
+                    if(c<3){ arr.push(cad[i]); c++; }
+                    else { arr.push(','); c=0; i--; }
+                }
+            }
+            return arr.reverse().join('');
+        }
+const openModalAsig=(activo)=>{ 
+    usuarioprincipal.value=activo;   
+    titulo.value='Depreciación de activos';
+    var gesini=activo.anio;
+    var gesfin=activo.aniofin;
+    var depranual=(activo.costo/activo.vida);
+    var depracum=0;
+    arrayDepreciaciones.value=[];
+   for(var ges=gesini; ges<gesfin; ges++){
+                var regDepreciacion=new Object();
+                regDepreciacion.gestion=ges;
+                regDepreciacion.ufvini=props.ufvini[ges-2008].valor;
+                regDepreciacion.ufvfin=props.ufvfin[ges-2008].valor;
+                regDepreciacion.depranual=depranual;
+                if(ges==gesini) {
+                    regDepreciacion.ufvini=activo.valor;
+                    var cantdias= diastransc(activo.fechaingreso,gesini+'-12-31')
+                    regDepreciacion.depranual=(activo.costo/(activo.vida*365))*cantdias;
+                }
+                regDepreciacion.incranual=activo.costo*((regDepreciacion.ufvfin/regDepreciacion.ufvini)-1);
+                depracum+=regDepreciacion.depranual;
+                regDepreciacion.depracum=depracum;
+                regDepreciacion.valorfin=activo.costo-depracum+regDepreciacion.incranual;
+                var ini=activo.fechaingreso; 
+                var fin=ges+'-12-31';
+                regDepreciacion.consumido=tiempotransc(ini,fin);
+                ini=(ges+1)+'-01-01'; fin=(gesini+activo.vida)+activo.fechaingreso.substr(4,6);
+                regDepreciacion.saldovida=tiempotransc(ini,fin);
+                arrayDepreciaciones.value.push(regDepreciacion);
+                console.log(regDepreciacion);
+            }
+    $('#modalasignacion').modal('show');  
+  
+};
+ 
+const closeModal=()=>{ 
+    form.reset();
+    formasig.reset();
+    $('#staticBackdrop').modal('hide'); 
+    $('#modalasignacion').modal('hide'); 
+};
+  
+ 
+   
+</script>
+
+<template>
+    <Head title="Depreciación" /> 
+    <Menu :listmenus="menus">
+        <div class="page-breadcrumb">
+          <div class="row">
+            <div class="col-md-5 align-self-center">
+                <!-- <h3 class="page-title">Activos</h3> -->
+              <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a>
+                        <Link   :href="route('dashboard')"> 
+                         </Link>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Depreciación de activos
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+            <div
+              class="
+                col-md-7
+                justify-content-end
+                align-self-center
+                d-none d-md-flex
+              "
+            >
+              <div class="d-flex"> 
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="container-fluid"> 
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="border-bottom title-part-padding">
+                  <h4 class="card-title mb-0">Listado general de los activos</h4>
+                </div>
+                <div class="card-body"> 
+                    <div class="col-md-6 ">
+                      
+
+
+                                            <div class="form-floating mb-3"> 
+                                                    <TextInput class="form-control" id="search" ref="nameinput" v-model="searchField" type="text" >
+                                                    </TextInput> 
+                                                <label for="serie">Buscar por codigo</label> 
+                                            </div>
+
+                    </div>
+
+
+
+                  <div class="table-responsive">
+                    <table
+                      id="zero_config"
+                      class="table table-bordered"
+                    >
+                      <thead>
+                        <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
+                          <th class="align-middle" style="text-align: center;">Activo</th>
+                          <th class="align-middle" style="text-align: center;">Cogido</th> 
+                          <th class="align-middle" style="text-align: center;">Grupo</th>
+                          <th class="align-middle" style="text-align: center;">Auxiliar</th>  
+                          <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
+                          <th class="align-middle" style="text-align: center;">Fecha de Ingreso</th>
+                          <th class="align-middle" style="text-align: center;">Valor de compra</th>
+                          <th class="align-middle" style="text-align: center;">Vida util</th>
+                         
+                          <th class="align-middle" style="text-align: center;">Operaciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="activo in activos.data" :key="activo.idactivo">
+                            <td class="align-middle" style="text-align: center;"><img :src="activo.imagen" alt="activo" width="75"></td>
+                            <td class="align-middle" style="text-align: center;"><b>{{ activo.codactivo}}</b></td> 
+                            <td class="align-middle" style="text-align: center;">{{ activo.nomgrupo }}</td>
+                            <td class="align-middle" style="text-align: center;">{{ activo.nomauxiliar }}</td> 
+                            <td class="align-middle" style="text-align: center;">{{ activo.nomambiente }}</td>
+                            <td class="align-middle" style="text-align: center;">{{ activo.fechaingreso }}</td>
+                            <td class="align-middle" style="text-align: center;">{{ activo.costo }} Bs.</td>
+                            <td class="align-middle" style="text-align: center;">{{ activo.vida }} Años</td>
+                            
+                            <td class="button-group align-middle" style="text-align: center;">  
+                                    
+                                    <button   class="btn btn-success"
+                                        @click="openModalAsig(activo)">
+                                        <i class="ti-money">&nbsp;Depreciar</i>
+                                    </button> 
+   
+                            </td> 
+                        </tr>
+                      </tbody>
+                     
+                    </table>
+                    <pagination class="mt-6" :links="activos.links" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- ==================================================================================== -->
+        <div class="modal fade" id="modalasignacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="modalasignacionLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content"> 
+                    <div class="
+                              modal-header modal-colored-header
+                              bg-info
+                              text-white
+                            ">
+                        <h4 class="modal-title" id="warning-header-modalLabel">
+                            {{titulo}}
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body"> 
+                                <form>
+                                    <div class="row"> 
+                                        <div class="col-md-12 row">
+                                           <h1 style=" text-align: center;font-weight: bold;margin-bottom: 23px;">{{usuarioprincipal.codactivo}}</h1>
+                                        </div>
+                                         
+                                        <div class="col-md-3">
+                                            <div class="form-floating mb-3"> 
+                                                    <TextInput class="form-control" id="obs" ref="nameinput" v-model="usuarioprincipal.costo" type="text" >
+                                                    </TextInput> 
+                                                <label for="obs">Costo</label> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating mb-3"> 
+                                                    <TextInput class="form-control" id="obs" ref="nameinput" v-model="usuarioprincipal.residual" type="text" >
+                                                    </TextInput> 
+                                                <label for="obs">Residual</label> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating mb-3"> 
+                                                    <TextInput class="form-control" id="obs" ref="nameinput" v-model="usuarioprincipal.coeficiente" type="text" > 
+                                                    </TextInput> 
+                                                <label for="obs">Coeficiente</label> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating mb-3"> 
+                                                    <TextInput class="form-control" id="obs" ref="nameinput" v-model="usuarioprincipal.vida" type="text" > 
+                                                    </TextInput> 
+                                                <label for="obs">Vida util</label> 
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                          
+                                            <div class="table-responsive">
+                                                  <table  class="table table-bordered" style="font-size: 11px;">
+                                                <thead class="tcabecera">
+                                                    <tr align="center">
+                                                        <th>Gestión</th>
+                                                        <th>UFV Inicio</th>
+                                                        <th>UFV Cierre</th>
+                                                        <th>Consumido</th>
+                                                        <th>Saldo de vida</th>
+                                                        <th align="right">Incremento Anual (+)</th>
+                                                        <th align="right">Depreciación Anual</th>
+                                                        <th align="right">Depreciación Acumulada (-)</th>
+                                                        <th align="right">Valor final</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="depreciacion in arrayDepreciaciones" :key="depreciacion.id" align="center">
+                                                        <td v-text="depreciacion.gestion"></td> 
+                                                        <td v-text="depreciacion.ufvini"></td> 
+                                                        <td v-text="depreciacion.ufvfin"></td>
+                                                        <td v-text="depreciacion.consumido"></td>
+                                                        <td v-text="depreciacion.saldovida"></td>
+                                                        <td v-text="formatomon(depreciacion.incranual)" align="right"></td>
+                                                        <td v-text="formatomon(depreciacion.depranual)" align="right"></td>
+                                                        <td v-text="formatomon(depreciacion.depracum)"  align="right"></td>
+                                                        <td v-text="formatomon(depreciacion.valorfin)"  align="right"></td>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                            </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                            Cancelar
+                        </button> 
+                    </div>
+ 
+
+                </div>
+            </div>
+        </div>
+    </Menu>
+</template>

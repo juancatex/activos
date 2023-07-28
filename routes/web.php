@@ -7,6 +7,7 @@ use App\Http\Controllers\ActivoController;
 use App\Http\Controllers\ActivoAsignacionController;
 use App\Http\Controllers\ActivoDevolucionController;
 use App\Http\Controllers\ActivoBajaController;
+use App\Http\Controllers\DepreController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('ActivoDev', ActivoDevolucionController::class); 
     Route::get('/ActivosDev', [ActivoDevolucionController::class, 'index'])->name('activo.dev'); 
+    
+    Route::get('/ActivosDepre', [DepreController::class, 'index'])->name('activo.depre'); 
 });
 
 require __DIR__.'/auth.php';

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('activo_grupos', function (Blueprint $table) {
             $table->increments('idag');
             $table->string('codgrupo',2);
-            $table->string('nomgrupo',50);
+            $table->string('nomgrupo',200);
             $table->tinyInteger('vida')->nullable(); 
             $table->integer('idcuentadepre')->nullable(); 
             $table->boolean('activo')->default(1);

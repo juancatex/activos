@@ -103,15 +103,7 @@ const openModal=(op,idactivo,codactivo,idambiente,idgrupo,idauxiliar,fechaingres
     }
     $('#staticBackdrop').modal('show'); 
 };
-const openModalAsig=(idactivo,codactivo)=>{ 
-    nextTick(()=>nameinput.value.focus()); 
-    titulo.value='Crear Asignación';
-    formasig.clearErrors();
-    formasig.reset();
-    formasig.idactivo=idactivo;
-    formasig.codactivo=codactivo;
-    $('#modalasignacion').modal('show'); 
-};
+ 
 const closeModal=()=>{ 
     form.reset();
     formasig.reset();
@@ -119,8 +111,8 @@ const closeModal=()=>{
     $('#modalasignacion').modal('hide'); 
 };
 const guardarDatos=()=>{
-   if(operacion.value==1){
     form.codactivo=codigo.value;
+   if(operacion.value==1){
     form.post(route('Activo.store'),{onSuccess:()=>{ok('Creado correctamente')}  });
    }else{
     form.put(route('Activo.update',form.idactivo),{onSuccess:()=>{ok('Modificado correctamente')}  });
@@ -282,7 +274,7 @@ alerta.fire({
                                 <form>
                                     <div class="row"> 
                                         <div class="col-md-12 row">
-                                           <h1 style=" text-align: center;font-weight: bold;margin-bottom: 23px;">{{operacion==1?codigo:form.codactivo}}</h1>
+                                           <h1 style=" text-align: center;font-weight: bold;margin-bottom: 23px;">{{codigo}}</h1>
                                         </div>
                                         <div class="col-md-4">
                                             <div :class="form.errors.idambiente?'  mb-3 has-danger':'  mb-3'"> 

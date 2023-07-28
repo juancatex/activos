@@ -24,7 +24,10 @@ class ActivoBajaController extends Controller
         $raw2=DB::raw('activo_asignacions.activo as asigactivo');
         $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
         $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar","activo_asignacions.idasignacion",$raw,$raw2)
-        ->leftJoin("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
+        // ->leftJoin("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
+        ->leftJoin('activo_asignacions', function($join) {
+            $join->on('activo_asignacions.idactivo', '=', 'activos.idactivo')->where('activo_asignacions.activo',1);
+          })
         ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
         ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
         ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")
