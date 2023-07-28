@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
         // DB::table('unidads')->insert(['idu'=>2,'name'=>'Prestamos','descripcionuni'=>'Prestamos']);  
         // DB::table('unidads')->insert(['idu'=>3,'name'=>'Sistemas','descripcionuni'=>'Sistemas']);  
         // DB::table('unidads')->insert(['idu'=>4,'name'=>'Activos Fijos','descripcionuni'=>'Activos Fijos']);  
-
+// -------------------------------------------------------
         DB::table('ambientes')->insert(['codambiente'=>'01','nomambiente'=>'GERENCIA']);
         DB::table('ambientes')->insert(['codambiente'=>'02','nomambiente'=>'ARCHIVO GENERAL']);
         DB::table('ambientes')->insert(['codambiente'=>'03','nomambiente'=>'DIRECCIÓN FINANCIERA']);
