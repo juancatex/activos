@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\ActivoAsignacion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,23 +12,26 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Activo;
 use App\Models\User;
 
-class ActivoAsignacionController extends Controller
+class ActivoDevolucionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $listamenus = new Menulist; 
-        $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
-        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar",$raw)
+        $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM users u where u.id=activo_asignacions.iduser) as asig');
+        $raw2=DB::raw('activo_asignacions.activo as asigactivo');
+        $raw3=DB::raw('activo_asignacions.obs as obsini');
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar",
+        "activo_asignacions.fechaini","activo_asignacions.estadoini","activo_asignacions.fechafin","activo_asignacions.estadofin","activo_asignacions.idasignacion",
+        "activo_asignacions.obsfin","activo_asignacions.codactivoasig",$raw,$raw2,$raw3)
+        ->join("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
         ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
         ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
         ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")
+        // ->where('activo_asignacions.activo',1)
         ->where('ambientes.activo',1)
         ->where('activo_grupos.activo',1)
         ->where('activo_auxiliars.activo',1)
-        ->where('activos.activo',1) ; 
+        ->where('activos.activo',1); 
         if(empty($request->search)){
             $activos= $activos->orderBy('activos.idactivo') ; 
         }else{
@@ -63,7 +65,7 @@ class ActivoAsignacionController extends Controller
 
         $idactivolast = Activo::latest()->first();
 
-        return Inertia::render('Activos/AsigActivo', [
+        return Inertia::render('Activos/DevActivo', [
             'menus' => $listamenus->Getmenus(empty($request->touch)?'0-0-0':$request->touch),
             'activos' => $activos,
             'users' =>  $users,
@@ -89,23 +91,7 @@ class ActivoAsignacionController extends Controller
      */
     public function store(Request $request)
     { 
-        $request->validate([  
-            'idactivo' => 'required|numeric',
-            'iduser' => 'required|numeric',  
-            'fechaini' => 'required|string|max:255', 
-            'codactivo' => 'required|string|max:255', 
-            'estadoini' => 'required|numeric',  
-            'obs' => 'required|string' 
-        ]);
-        $Activo = ActivoAsignacion::create([
-            'idactivo' => $request->idactivo,
-            'codactivoasig' => $request->codactivo,
-            'iduser' => $request->iduser,
-            'fechaini' => $request->fechaini,
-            'estadoini' => $request->estadoini,
-            'obs' => $request->obs 
-        ]);  
-        return redirect('ActivoAsig');
+        
     }
 
     /**
@@ -113,26 +99,32 @@ class ActivoAsignacionController extends Controller
      */
   
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ActivoAsignacion $activoAsignacion)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ActivoAsignacion $activoAsignacion)
+    public function update(Request $request, string $id)
     {
-        //
+        $request->validate([  
+            'idasignacion' => 'required|numeric', 
+            'fechafin' => 'required|string|max:255', 
+            'estadofin' => 'required|numeric',  
+            'obsfin' => 'required|string' 
+        ]);
+        $activoasig = ActivoAsignacion::findOrFail($request->idasignacion); 
+        $activoasig->fechafin = $request->fechafin; 
+        $activoasig->estadofin = $request->estadofin; 
+        $activoasig->obsfin = $request->obsfin;   
+        $activoasig->activo = 0;   
+        $activoasig->save(); 
+
+        return redirect('ActivoDev');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ActivoAsignacion $activoAsignacion)
+    public function destroy(string $id)
     {
         //
     }

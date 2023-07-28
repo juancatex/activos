@@ -155,18 +155,18 @@ alerta.fire({
                   <div class="table-responsive">
                     <table
                       id="zero_config"
-                      class="table table-striped table-bordered"
+                      class="table table-bordered"
                     >
                       <thead>
-                        <tr>
-                          <th>Nombre completo</th>
-                          <th>C.I.</th>
-                          <th>Correo Electronico</th>
-                          <th>Fecha de Ingreso</th>
-                          <th>Celular</th>
-                          <th>Cargo</th>
-                          <th>Unidad</th>
-                          <th>Operaciones</th>
+                        <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
+                          <th class="align-middle" style="text-align: center;">Nombre completo</th>
+                          <th class="align-middle" style="text-align: center;">C.I.</th>
+                          <th class="align-middle" style="text-align: center;">Correo Electronico</th>
+                          <th class="align-middle" style="text-align: center;">Fecha de Ingreso</th>
+                          <th class="align-middle" style="text-align: center;">Celular</th>
+                          <th class="align-middle" style="text-align: center;">Cargo</th>
+                          <th class="align-middle" style="text-align: center;">Unidad</th>
+                          <th class="align-middle" style="text-align: center;">Operaciones</th>
                         </tr>
                       </thead>
                       <tbody>

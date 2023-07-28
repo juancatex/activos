@@ -59,7 +59,7 @@ const page = usePage()
 
 
     <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin1" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="boxed" class="mini-sidebar">
+        data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full" class="mini-sidebar">
         <header class="topbar" data-navbarbg="skin1">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin6" data-navheader="fixed">
@@ -94,7 +94,7 @@ const page = usePage()
                  
                     <ul class="navbar-nav"> 
                       <!-- ============================================================== -->
-                        <li class="nav-item search-box d-none d-md-flex align-items-center">
+                        <!-- <li class="nav-item search-box d-none d-md-flex align-items-center">
                             <div class="nav-link">
                                 <form class="app-search">
                                     <input type="text" class="form-control rounded-pill border-0"
@@ -108,7 +108,7 @@ const page = usePage()
                                         </svg></a>
                                 </form>
                             </div>
-                         </li> 
+                         </li>  -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#"

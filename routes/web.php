@@ -5,6 +5,8 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivoController;
 use App\Http\Controllers\ActivoAsignacionController;
+use App\Http\Controllers\ActivoDevolucionController;
+use App\Http\Controllers\ActivoBajaController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,12 +43,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/Activos', [ActivoController::class, 'ruta'])->name('activo.lista');  
-    Route::post('activodestroy', [ActivoController::class, 'desabilitar'])->name('activodestroy');
+    // Route::post('activodestroy', [ActivoController::class, 'desabilitar'])->name('activodestroy');
     Route::resource('Activo', ActivoController::class);
+    Route::get('/Activos', [ActivoController::class, 'ruta'])->name('activo.lista');  
+
+    Route::resource('ActivoBaja', ActivoBajaController::class);
+    Route::get('/ActivosBaja', [ActivoBajaController::class, 'index'])->name('activo.baja');  
+    Route::post('activodestroy', [ActivoBajaController::class, 'desabilitar'])->name('activodestroy');
 
     Route::resource('ActivoAsig', ActivoAsignacionController::class); 
     Route::get('/ActivosAsig', [ActivoAsignacionController::class, 'index'])->name('activo.asig'); 
+
+    Route::resource('ActivoDev', ActivoDevolucionController::class); 
+    Route::get('/ActivosDev', [ActivoDevolucionController::class, 'index'])->name('activo.dev'); 
 });
 
 require __DIR__.'/auth.php';

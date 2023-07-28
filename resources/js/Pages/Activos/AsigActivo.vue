@@ -50,10 +50,9 @@ router.get('ActivoAsig', {search: searchField.value}, {preserveState: true, pres
 }, 300));
 
 const codigo = computed(() => { 
-    return 'MUG'+(form.idambiente!=null?(form.idambiente>9?form.idambiente:'0'+form.idambiente):'')+
+    return 'MUG'+(props.lastid>9?props.lastid:'0'+props.lastid)+(form.idambiente!=null?(form.idambiente>9?form.idambiente:'0'+form.idambiente):'')+
    (form.idgrupo!=null? (form.idgrupo>9?form.idgrupo:'0'+form.idgrupo):'')+
-    (form.idauxiliar!=null?(form.idauxiliar>9?form.idauxiliar:'0'+form.idauxiliar):'')+
-    (props.lastid>9?props.lastid:'0'+props.lastid);
+    (form.idauxiliar!=null?(form.idauxiliar>9?form.idauxiliar:'0'+form.idauxiliar):'');
 });
 const props = defineProps({
     menus: {
@@ -237,19 +236,19 @@ alerta.fire({
                   <div class="table-responsive">
                     <table
                       id="zero_config"
-                      class="table table-striped table-bordered"
+                      class="table table-bordered"
                     >
                       <thead>
-                        <tr> 
-                          <th>Activo</th>
-                          <th>Cogido</th>
+                        <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
+                          <th class="align-middle" style="text-align: center;">Activo</th>
+                          <th class="align-middle" style="text-align: center;">Cogido</th>
                           <!-- <th>Descripción</th> --> 
-                          <th>Grupo</th>
-                          <th>Auxiliar</th> 
-                          <th>Fecha Ingreso</th> 
-                          <th>Ambiente</th>
-                          <th>Asignación</th> 
-                          <th>Operaciones</th>
+                          <th class="align-middle" style="text-align: center;">Grupo</th>
+                          <th class="align-middle" style="text-align: center;">Auxiliar</th> 
+                          <th class="align-middle" style="text-align: center;">Fecha Ingreso</th> 
+                          <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
+                          <th class="align-middle" style="text-align: center;">Asignación</th> 
+                          <th class="align-middle" style="text-align: center;">Operaciones</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -262,7 +261,7 @@ alerta.fire({
                             <td class="align-middle" style="text-align: center;">{{ activo.fechaingreso }}</td>
                             <td class="align-middle" style="text-align: center;">{{ activo.nomambiente }}</td>
                             <td :class="activo.asig?'align-middle':'align-middle text-warning'" style="text-align: center;">{{ activo.asig?activo.asig:'No asignado' }}</td>  
-                            <td class="button-group">  
+                            <td class="button-group align-middle" style="text-align: center;">  
                                     
                                     <button v-if="!activo.asig" class="btn btn-info"
                                         @click="openModalAsig(activo.idactivo,activo.codactivo,activo.idambiente)">
@@ -311,7 +310,7 @@ alerta.fire({
                                         </div>
                                         <div class="col-md-4">
                                             <div :class="form.errors.idambiente?'  mb-3 has-danger':'  mb-3'"> 
-                                                <label for="idambiente">Ambiente</label> 
+                                                <label for="idambiente">Unidad Funcional</label> 
                                                     <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="form.idambiente" type="text" :options="ambiente">
                                                     </SelectInputAmbiente>  
                                                 <small v-show="form.errors.idambiente" class="form-control-feedback">

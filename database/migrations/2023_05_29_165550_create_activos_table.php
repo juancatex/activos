@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('marca',20)->nullable();
             $table->string('serie',20)->nullable();
             $table->longText('imagen'); 
-            $table->float('residual')->default(0)->nullable();
+            $table->double('residual', 15, 2)->default(0)->nullable();
             $table->string('obs',100)->nullable(); 
             $table->date('fechabaja')->nullable();
             $table->string('nrordenbaja',10)->nullable();

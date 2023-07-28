@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
         DB::table('menus')->insert(['idm'=>2,'icon'=>'check_circle','nommenu'=>'Asignación de Activos','descripcionmenu'=>'Asignación de Activos']);  
         DB::table('menus')->insert(['idm'=>3,'icon'=>'cancel','nommenu'=>'Devolución de Activos','descripcionmenu'=>'Devolución de Activos']);  
         DB::table('menus')->insert(['idm'=>4,'icon'=>'home','nommenu'=>'Empresa','descripcionmenu'=>'Empresa']);  
+        DB::table('menus')->insert(['idm'=>5,'icon'=>'disabled_by_default','nommenu'=>'Baja de Activos','descripcionmenu'=>'Baja de Activos']);  
+ 
  
         DB::table('vistas')->insert(['idv'=>1,'nomvista'=>'Información','ruta'=>'empresa.personal']); //Empresa
         DB::table('vistas')->insert(['idv'=>2,'nomvista'=>'Unidades','ruta'=>'empresa.personal']); //Empresa
@@ -44,6 +46,8 @@ class DatabaseSeeder extends Seeder
         DB::table('vistas')->insert(['idv'=>4,'nomvista'=>'Personal','ruta'=>'empresa.personal']); //Empresa
         DB::table('vistas')->insert(['idv'=>5,'nomvista'=>'Catalogo','ruta'=>'activo.lista']); 
         DB::table('vistas')->insert(['idv'=>6,'nomvista'=>'Asignación','ruta'=>'activo.asig']); 
+        DB::table('vistas')->insert(['idv'=>7,'nomvista'=>'Devolución','ruta'=>'activo.dev']); 
+        DB::table('vistas')->insert(['idv'=>8,'nomvista'=>'Bajas de activos','ruta'=>'activo.baja']); 
         
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>1]);
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>2]);
@@ -52,12 +56,14 @@ class DatabaseSeeder extends Seeder
 
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>1,'idv'=>5]); 
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>2,'idv'=>6]); 
+        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>3,'idv'=>7]); 
+        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>5,'idv'=>8]); 
 
 
-        DB::table('unidads')->insert(['idu'=>1,'name'=>'Gerencia','descripcionuni'=>'Gerencia']);  
-        DB::table('unidads')->insert(['idu'=>2,'name'=>'Prestamos','descripcionuni'=>'Prestamos']);  
-        DB::table('unidads')->insert(['idu'=>3,'name'=>'Sistemas','descripcionuni'=>'Sistemas']);  
-        DB::table('unidads')->insert(['idu'=>4,'name'=>'Activos Fijos','descripcionuni'=>'Activos Fijos']);  
+        // DB::table('unidads')->insert(['idu'=>1,'name'=>'Gerencia','descripcionuni'=>'Gerencia']);  
+        // DB::table('unidads')->insert(['idu'=>2,'name'=>'Prestamos','descripcionuni'=>'Prestamos']);  
+        // DB::table('unidads')->insert(['idu'=>3,'name'=>'Sistemas','descripcionuni'=>'Sistemas']);  
+        // DB::table('unidads')->insert(['idu'=>4,'name'=>'Activos Fijos','descripcionuni'=>'Activos Fijos']);  
 
         DB::table('ambientes')->insert(['codambiente'=>'01','nomambiente'=>'GERENCIA']);
         DB::table('ambientes')->insert(['codambiente'=>'02','nomambiente'=>'ARCHIVO GENERAL']);

@@ -17,9 +17,11 @@ return new class extends Migration
             $table->bigInteger('iduser')->unsigned();   
             $table->date('fechaini'); 
             $table->integer('estadoini')->comment('1-bueno, 2-regular, 3-malo');
-            $table->string('obs',100)->nullable();
+            $table->string('obs',1000)->nullable();
+            $table->string('codactivoasig',20)->nullable();
             $table->date('fechafin')->nullable();
             $table->integer('estadofin')->nullable()->comment('1-bueno, 2-regular, 3-malo'); 
+            $table->string('obsfin',1000)->nullable();
             $table->boolean('activo')->default(1);
             $table->timestamps();
             $table->foreign('idactivo')->references('idactivo')->on('activos');
