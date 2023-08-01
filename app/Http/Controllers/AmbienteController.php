@@ -4,15 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Ambiente;
 use Illuminate\Http\Request;
+use App\Clases\Menulist;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class AmbienteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $listamenus = new Menulist;  
+        $Ambiente= Ambiente::where('activo',1)
+        ->orderBy('idambiente')
+        ->paginate(10);   
+        $idactivolast = Ambiente::latest()->first();
+        return Inertia::render('Empresa/Ambiente', [
+            'menus' => $listamenus->Getmenus(empty($request->touch)?'0-0-0':$request->touch),
+            'ambiente' => $Ambiente ,
+            'lastid'=>$idactivolast!=null?$idactivolast->idambiente+1:1,
+        ]);
     }
 
     /**
@@ -28,7 +40,13 @@ class AmbienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([  
+            'nomambiente' => 'required|string' 
+        ]);
+        
+        $Ambiente = Ambiente::create($request->input());  
+        $Ambiente->save();
+        return redirect('Ambiente');
     }
 
     /**
@@ -52,9 +70,19 @@ class AmbienteController extends Controller
      */
     public function update(Request $request, Ambiente $ambiente)
     {
-        //
-    }
+        $Ambiente = Ambiente::findOrFail($request->idambiente); 
+        $Ambiente->nomambiente = $request->nomambiente;  
+        $Ambiente->save(); 
 
+        return redirect('Ambiente');
+    }
+    public function desabilitar(Request $request)
+    {
+        $Ambiente = Ambiente::findOrFail($request->idambiente); 
+        $Ambiente->activo = 0; 
+        $Ambiente->save(); 
+        return redirect('Ambiente');
+    }
     /**
      * Remove the specified resource from storage.
      */

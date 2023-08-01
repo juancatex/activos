@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class depre extends Model
 {
     use HasFactory;
+    protected $fillable = ['gestion','periodo','vc','va','ia','daan','ida','pd'];
+    protected $primaryKey = 'iddepre';
+           
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\RolVista;
 use Illuminate\Http\Request;
+use App\Clases\Menulist;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class RolVistaController extends Controller
 {
@@ -12,7 +15,7 @@ class RolVistaController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     /**
@@ -28,7 +31,7 @@ class RolVistaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      
     }
 
     /**
@@ -52,9 +55,9 @@ class RolVistaController extends Controller
      */
     public function update(Request $request, RolVista $rolVista)
     {
-        //
+       
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */

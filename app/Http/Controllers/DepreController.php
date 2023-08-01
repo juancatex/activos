@@ -20,7 +20,7 @@ class DepreController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $listamenus = new Menulist; 
         $raw=DB::raw('YEAR(activos.fechaingreso) as anio');
@@ -30,29 +30,32 @@ class DepreController extends Controller
         ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
         ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
         ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")
-        ->join('ufvs','ufvs.fecha','activos.fechaingreso')
-        ->where('ambientes.activo',1)
+        ->join('ufvs','ufvs.fecha','activos.fechaingreso');
+        if(!empty($request->search)){ 
+            $activos= $activos->where('activos.codactivo','like',"%$request->search%") ; 
+        }
+        if(!empty($request->searchambiente)){ 
+            $activos= $activos->where('activos.idambiente','=',$request->searchambiente); 
+        }
+        if(!empty($request->searchfecha)){ 
+            $activos= $activos->where('activos.fechaingreso','=',$request->searchfecha); 
+        }
+        
+        $activos= $activos->where('ambientes.activo',1)
         ->where('activo_grupos.activo',1)
         ->where('activo_auxiliars.activo',1)
-        ->where('activos.activo',1) ; 
-        if(empty($request->search)){
-            $activos= $activos->orderBy('activos.idactivo') ; 
-        }else{
-            $activos= $activos->where('activos.codactivo','like',"%$request->search%")
-            ->orderBy('activos.idactivo') ; 
-        }
-        $acti=$activos;
-
-        $activos= $activos->paginate(10); 
+        ->where('activos.activo',1)->paginate(10); 
           
         $ufvini=ufv::select('valor')->where('fecha','like','%-01-01')->get();
         $ufvfin=ufv::select('valor')->where('fecha','like','%-12-31')->get();
-
+        $ambiente= Ambiente::where('ambientes.activo',1)->orderBy('ambientes.nomambiente')  
+        ->get();   
  
         return Inertia::render('Activos/DepreActivo', [
             'menus' => $listamenus->Getmenus(empty($request->touch)?'0-0-0':$request->touch),
             'activos' => $activos, 
             'ufvini' => $ufvini, 
+            'ambiente' => $ambiente,
             'ufvfin' => $ufvfin, 
         ]);
     }

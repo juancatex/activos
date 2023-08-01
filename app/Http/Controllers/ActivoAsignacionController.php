@@ -25,20 +25,20 @@ class ActivoAsignacionController extends Controller
         $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar",$raw)
         ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
         ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
-        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")
-        ->where('ambientes.activo',1)
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")  ; 
+        if(!empty($request->search)){ 
+            $activos= $activos->where('activos.codactivo','like',"%$request->search%") ; 
+        }
+        if(!empty($request->searchambiente)){ 
+            $activos= $activos->where('activos.idambiente','=',$request->searchambiente); 
+        }
+        if(!empty($request->searchfecha)){ 
+            $activos= $activos->where('activos.fechaingreso','=',$request->searchfecha); 
+        }
+        $activos= $activos ->where('ambientes.activo',1)
         ->where('activo_grupos.activo',1)
         ->where('activo_auxiliars.activo',1)
-        ->where('activos.activo',1) ; 
-        if(empty($request->search)){
-            $activos= $activos->orderBy('activos.idactivo') ; 
-        }else{
-            $activos= $activos->where('activos.codactivo','like',"%$request->search%")
-            ->orderBy('activos.idactivo') ; 
-        }
-        
-
-        $activos= $activos->paginate(10); 
+        ->where('activos.activo',1) ->orderBy('activos.idactivo')->paginate(10); 
         
         $ambiente= Ambiente::where('ambientes.activo',1)->orderBy('ambientes.nomambiente')  
         ->get();   

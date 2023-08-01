@@ -1,14 +1,18 @@
 <script setup>
 import Menu from '@/Layouts/menu.vue'; 
-import { Head,Link,useForm } from '@inertiajs/vue3'; 
+import { Head,Link,useForm,router } from '@inertiajs/vue3'; 
 import Pagination from '@/Components/Paginations.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SelectInputMotivos from '@/Components/SelectInputMotivos.vue'; 
+import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
 import Swal from 'sweetalert2';
-import {ref,nextTick,onMounted,computed} from 'vue';  
+import {ref,nextTick,onMounted,computed,watch} from 'vue';  
 import moment from 'moment';
+import { debounce,findIndex,reduce } from 'lodash';
 const nameinput=ref(null); 
 const titulo=ref('');     
+const searchField=ref('');
+const searchambiente=ref(null);
 const form = useForm({
     idactivo:null,
     codactivo: '',
@@ -69,6 +73,14 @@ const props = defineProps({
         type: String,
     },
 });
+watch(searchField, debounce(() => {
+// router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
+router.get('ActivoBaja', {searchambiente: searchambiente.value,search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
+}, 300));
+watch(searchambiente, debounce(() => {
+// router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
+router.get('ActivoBaja', {searchambiente: searchambiente.value,search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
+}, 300));
 const openModal=(op,idactivo,codactivo,fechabaja,nrordenbaja,idmotivobaja,obsbaja)=>{ 
     nextTick(()=>nameinput.value.focus());   
         formasig.clearErrors();
@@ -158,6 +170,23 @@ alerta.fire({
                   <h4 class="card-title mb-0">Listado general de los activos</h4>
                 </div>
                 <div class="card-body"> 
+                    <div class="row"> 
+                        <div class="col-md-4"> 
+                                            <div class="form-floating mt-3"> 
+                                                    <TextInput class="form-control" id="search" ref="nameinput" v-model="searchField" type="text" >
+                                                    </TextInput> 
+                                                <label for="serie">Buscar por codigo</label> 
+                                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                                            <div class=" mb-3'"> 
+                                                <label for="idambiente">Buscar por Unidad Funcional</label> 
+                                                    <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
+                                                    </SelectInputAmbiente>   
+                                            </div>
+                        </div>
+                        
+                    </div>
                   <div class="table-responsive">
                     <table
                       id="zero_config"
@@ -166,7 +195,7 @@ alerta.fire({
                       <thead>
                         <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
                           <th class="align-middle" style="text-align: center;">Activo</th>
-                          <th class="align-middle" style="text-align: center;">Cogido</th>
+                          <th class="align-middle" style="text-align: center;">Codigo</th>
                           <th class="align-middle" style="text-align: center;">Descripción</th>
                           <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
                           <th class="align-middle" style="text-align: center;">Grupo</th>

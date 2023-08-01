@@ -29,10 +29,10 @@ class DatabaseSeeder extends Seeder
         DB::table('rols')->insert(['name'=>'Profesional 3','descripcionrol'=>'Profesional 3']);
         DB::table('rols')->insert(['name'=>'Auditor','descripcionrol'=>'Auditor']);
 
+
+        //INTERNOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
         DB::table('grupos')->insert(['nomgrupo'=>'Configuración','descripciongrupo'=>'Configuración']);
         DB::table('grupos')->insert(['nomgrupo'=>'Procesos','descripciongrupo'=>'Procesos']);
-
- 
 
         DB::table('menus')->insert(['idm'=>1,'icon'=>'library_add','nommenu'=>'Activos','descripcionmenu'=>'Activos']);  
         DB::table('menus')->insert(['idm'=>2,'icon'=>'check_circle','nommenu'=>'Asignación de Activos','descripcionmenu'=>'Asignación de Activos']);  
@@ -40,22 +40,28 @@ class DatabaseSeeder extends Seeder
         DB::table('menus')->insert(['idm'=>4,'icon'=>'home','nommenu'=>'Empresa','descripcionmenu'=>'Empresa']);  
         DB::table('menus')->insert(['idm'=>5,'icon'=>'disabled_by_default','nommenu'=>'Baja de Activos','descripcionmenu'=>'Baja de Activos']);  
         DB::table('menus')->insert(['idm'=>6,'icon'=>'swap_vert','nommenu'=>'Depreciación de Activos','descripcionmenu'=>'Depreciación de Activos']);  
-        
- 
-        DB::table('vistas')->insert(['idv'=>1,'nomvista'=>'Información','ruta'=>'empresa.personal']); //Empresa
-        DB::table('vistas')->insert(['idv'=>2,'nomvista'=>'Unidades','ruta'=>'empresa.personal']); //Empresa
-        DB::table('vistas')->insert(['idv'=>3,'nomvista'=>'Cargos','ruta'=>'empresa.personal']); //Empresa
+         
+        DB::table('vistas')->insert(['idv'=>1,'nomvista'=>'Información','ruta'=>'empresa.datos']); //Empresa
+        DB::table('vistas')->insert(['idv'=>2,'nomvista'=>'Area Funcional','ruta'=>'ambiente.datos']); //Empresa
+        DB::table('vistas')->insert(['idv'=>3,'nomvista'=>'Cargos','ruta'=>'rol.datos']); //Empresa
         DB::table('vistas')->insert(['idv'=>4,'nomvista'=>'Personal','ruta'=>'empresa.personal']); //Empresa
         DB::table('vistas')->insert(['idv'=>5,'nomvista'=>'Catalogo','ruta'=>'activo.lista']); 
         DB::table('vistas')->insert(['idv'=>6,'nomvista'=>'Asignación','ruta'=>'activo.asig']); 
         DB::table('vistas')->insert(['idv'=>7,'nomvista'=>'Devolución','ruta'=>'activo.dev']); 
         DB::table('vistas')->insert(['idv'=>8,'nomvista'=>'Bajas de activos','ruta'=>'activo.baja']); 
-        DB::table('vistas')->insert(['idv'=>9,'nomvista'=>'Depreciación de activos','ruta'=>'activo.depre']); 
+        DB::table('vistas')->insert(['idv'=>9,'nomvista'=>'Depreciación de activos','ruta'=>'activo.depre']);  
+        DB::table('vistas')->insert(['idv'=>10,'nomvista'=>'Grupo','ruta'=>'grupo.datos']);  
+        DB::table('vistas')->insert(['idv'=>11,'nomvista'=>'Auxiliar','ruta'=>'aux.datos']);  
+        DB::table('vistas')->insert(['idv'=>12,'nomvista'=>'Motivo de baja','ruta'=>'motivo.datos']);  
+       // FIN        INTERNOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
         
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>1]);
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>2]);
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>3]);
-        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>4]); 
+        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>4]);  
+        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>10]);  
+        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>11]);  
+        DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>1,'idm'=>4,'idv'=>12]);  
 
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>1,'idv'=>5]); 
         DB::table('rol_vistas')->insert(['idrol'=>1,'idg'=>2,'idm'=>2,'idv'=>6]); 
@@ -69,6 +75,12 @@ class DatabaseSeeder extends Seeder
         // DB::table('unidads')->insert(['idu'=>3,'name'=>'Sistemas','descripcionuni'=>'Sistemas']);  
         // DB::table('unidads')->insert(['idu'=>4,'name'=>'Activos Fijos','descripcionuni'=>'Activos Fijos']);  
 // -------------------------------------------------------
+        DB::table('empresas')->insert(['nombre'=>'Mugebusch','direccion'=>'Av. Arce 2177, Hotel Real Plaza, Business Center Piso 5',
+        'nit'=>99999991111,
+        'telefono1'=>2444124,'telefono2'=>2444803,'telefono3'=>2441785,'telefono4'=>2444817,
+        'ciudad'=>'La paz',
+        'web'=>'www.mugebusch.org',]); 
+
         DB::table('ambientes')->insert(['codambiente'=>'01','nomambiente'=>'GERENCIA']);
         DB::table('ambientes')->insert(['codambiente'=>'02','nomambiente'=>'ARCHIVO GENERAL']);
         DB::table('ambientes')->insert(['codambiente'=>'03','nomambiente'=>'DIRECCIÓN FINANCIERA']);
@@ -282,5 +294,92 @@ class DatabaseSeeder extends Seeder
         $sql = file_get_contents($path);
         DB::unprepared($sql);
        
+
+        $procedureDepreciar = "CREATE OR REPLACE PROCEDURE depreciar (in idactivoin int)
+              BEGIN
+              
+              DECLARE punteroanioreg BIGINT DEFAULT 0;
+              SET @residual = 0;
+              SET @costo = 0;
+              SET @vida = 0;
+              SET @fechaingreso='';
+              SET @fechames=0; 
+             SELECT activos.costo into @costo FROM activos join activo_grupos on activos.idgrupo=activo_grupos.idag where  activos.idactivo=idactivoin;
+            SELECT activos.fechaingreso into @fechaingreso FROM activos join activo_grupos on activos.idgrupo=activo_grupos.idag where  activos.idactivo=idactivoin;
+            SELECT activos.residual into @residual FROM activos join activo_grupos on activos.idgrupo=activo_grupos.idag where  activos.idactivo=idactivoin;
+            SELECT activo_grupos.vida into @vida FROM activos join activo_grupos on activos.idgrupo=activo_grupos.idag where  activos.idactivo=idactivoin;
+               set @anioactual=(select YEAR(CURDATE()));
+               SET punteroanioreg=YEAR(@fechaingreso); 
+
+               SET @coeficiente =round((100/@vida)/100,2);
+                aloop: LOOP
+               
+                    IF punteroanioreg<@anioactual THEN
+                        set @vc=0; 
+                        set @suma_vc=0; 
+                        set @ufv_ini=0;
+                        set @ufv_fin=0;
+                        set @sum_ida=0;
+                        set @sum_dp=0;
+                        set @daan=0;
+                        set @ia=0;
+                        set @va=0;
+                        set @dp=0;
+                         
+                        set @valorneto=0;
+                        SELECT  COALESCE(SUM(ia),0) into @vc FROM depres where gestion<punteroanioreg;
+                        set @suma_vc=round(@vc+@costo,2);  
+                        SELECT  COALESCE(SUM(ida),0) into @sum_ida FROM depres where gestion<punteroanioreg; 
+                        SELECT  COALESCE(SUM(pd),0) into @sum_dp FROM depres where gestion<punteroanioreg;
+                        set @daan=round(@sum_ida+@sum_dp,2);
+                                if @vc=0 then
+                                    select valor into @ufv_ini from ufvs where fecha = CONCAT( @fechaingreso) limit 1; 
+                                    select valor into @ufv_fin from ufvs where fecha = CONCAT(punteroanioreg , '-12-31') limit 1; 
+                                else
+                                    select valor into @ufv_ini from ufvs where fecha = CONCAT(punteroanioreg , '-01-01') limit 1;
+                                    select valor into @ufv_fin from ufvs where fecha = CONCAT(punteroanioreg , '-12-31') limit 1;
+                                end if;
+                         
+                        set @ia=round(((@ufv_fin/@ufv_ini)-1)*@suma_vc,2);
+                        set @va=round(@ia+@suma_vc,2); 
+                        set @dp=round(@va*@coeficiente,2);
+                       
+                        set @ida=0;
+                                   IF @daan=0 THEN
+                                        set @ida=0; 
+                                   ELSE
+                                        set @ida=round(((@ufv_fin/@ufv_ini)-1)*@daan,2); 
+                                   END IF;   
+
+                        set @valorneto=round(@va-(@daan+@ida+@dp),2);
+                               IF @valorneto>0 THEN
+                                  INSERT INTO depres (idactivo,gestion, periodo, vc, va, ia, daan, ida, pd)  VALUES(idactivoin,punteroanioreg, 12,@suma_vc, @va, @ia, @daan, @ida, @dp); 
+                               ELSE
+                                    IF @valorneto<=0 THEN
+                                        INSERT INTO depres (idactivo,gestion, periodo, vc, va, ia, daan, ida, pd)  VALUES(idactivoin,punteroanioreg, 12,@suma_vc, @va, @ia, @daan, @ida, @dp); 
+                                        LEAVE aloop; 
+                                    END IF; 
+                               END IF; 
+                    ELSE
+                     LEAVE aloop;
+                    END IF;  
+                     SET punteroanioreg=punteroanioreg+1; 
+                END LOOP aloop;
+             
+              END;"; 
+              DB::unprepared($procedureDepreciar);
+
+            /*  $funciondepre="CREATE OR REPLACE FUNCTION getPrestamosmora (id int) 
+              RETURNS text
+              DETERMINISTIC
+              BEGIN  
+              SET @moras = '';
+               CALL getidsprestamosMora(@moras,id); 
+                         if(CHAR_LENGTH(@moras)=0) then
+                         SET @moras = '0|0';
+                         end if;
+                RETURN @moras;
+              END";
+               DB::unprepared($funciondepre);*/
     }
 }

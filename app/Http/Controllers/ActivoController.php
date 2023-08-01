@@ -22,8 +22,15 @@ class ActivoController extends Controller
         $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar",$raw)
         ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
         ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
-        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")
-        ->where('ambientes.activo',1)
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar");
+
+        if(!empty($request->search)){ 
+            $activos= $activos->where('activos.codactivo','like',"%$request->search%") ; 
+        }
+        if(!empty($request->searchambiente)){ 
+            $activos= $activos->where('activos.idambiente','=',$request->searchambiente); 
+        } 
+        $activos= $activos->where('ambientes.activo',1)
         ->where('activo_grupos.activo',1)
         ->where('activo_auxiliars.activo',1)
         ->where('activos.activo',1)
@@ -35,13 +42,20 @@ class ActivoController extends Controller
         ->get();   
         $grupo= ActivoGrupo::where('activo_grupos.activo',1)->orderBy('activo_grupos.nomgrupo') 
         ->get();   
-        $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1)->orderBy('activo_auxiliars.nomauxiliar')  
-        ->get(); 
+        // $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1)->orderBy('activo_auxiliars.nomauxiliar')  
+        // ->get(); 
+
+        $aux=[];
+        if(!empty($request->searchaux)){
+            $aux= ActivoAuxiliar::where('activo_auxiliars.activo',1)->where('idgrupo',$request->searchaux)->orderBy('activo_auxiliars.nomauxiliar') 
+            ->get(); 
+        } 
+        
 
         $idactivolast = Activo::latest()->first();
 
         return Inertia::render('Activos/Activo', [
-            'menus' => $listamenus->Getmenus('0-0-0'),
+            'menus' => $listamenus->Getmenus(empty($request->touch)?'0-0-0':$request->touch),
             'activos' => $activos,
             'ambiente' => $ambiente,
             'grupo' => $grupo,

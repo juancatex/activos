@@ -181,7 +181,7 @@ const ok =(msj)=>{
                       <thead>
                         <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
                           <th class="align-middle" style="text-align: center;">Activo</th>
-                          <th class="align-middle" style="text-align: center;">Cogido</th>
+                          <th class="align-middle" style="text-align: center;">Codigo</th>
                           <th class="align-middle" style="text-align: center;">Asignado a</th> 
                           <!-- <th>Descripción</th> --> 
                           <!-- <th class="align-middle" style="text-align: center;">Grupo</th>

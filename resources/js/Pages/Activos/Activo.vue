@@ -1,6 +1,6 @@
 <script setup>
 import Menu from '@/Layouts/menu.vue'; 
-import { Head,Link,useForm } from '@inertiajs/vue3'; 
+import { Head,Link,useForm,router } from '@inertiajs/vue3'; 
 import Pagination from '@/Components/Paginations.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
@@ -10,12 +10,14 @@ import SelectInputAuxiliar from '@/Components/SelectInputAuxiliar.vue';
 import SelectInputUsers from '@/Components/SelectInputUsers.vue';
 import SelectInputEstados from '@/Components/SelectInputEstados.vue';
 import Swal from 'sweetalert2';
-import {ref,nextTick,onMounted,computed} from 'vue'; 
-import { isNull } from 'lodash';
+import {ref,nextTick,onMounted,computed,watch} from 'vue'; 
+import { isNull,debounce } from 'lodash';
 import moment from 'moment';
 const nameinput=ref(null); 
 const titulo=ref('');
 const nombreasig=ref('');
+const searchField=ref('');
+const searchambiente=ref(null);
 const estadoasignacion=ref([{'id':1,'name':'Bueno'},{'id':2,'name':'Regular'},{'id':3,'name':'Malo'}]);
 const operacion=ref(1);  
 const form = useForm({
@@ -43,13 +45,25 @@ const formasig = useForm({
     obs: '',
     estadoini: null    
 });
-
+ 
+function cambiagrupo(){ 
+    form.idauxiliar=null;
+    router.get('Activo', {searchaux: form.idgrupo}, {preserveState: true, preserveScroll: true, only: ['aux']});   
+}
+watch(searchField, debounce(() => {
+// router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
+router.get('Activo', {searchambiente: searchambiente.value,search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
+}, 300));
+watch(searchambiente, debounce(() => {
+// router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
+router.get('Activo', {searchambiente: searchambiente.value,search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
+}, 300));
 const codigo = computed(() => {
     
     return 'MUG'+(props.lastid>9?props.lastid:'0'+props.lastid)+(form.idambiente!=null?(form.idambiente>9?form.idambiente:'0'+form.idambiente):'')+
    (form.idgrupo!=null? (form.idgrupo>9?form.idgrupo:'0'+form.idgrupo):'')+
     (form.idauxiliar!=null?(form.idauxiliar>9?form.idauxiliar:'0'+form.idauxiliar):'');
-});
+}); 
 const props = defineProps({
     menus: {
         type: Object,
@@ -194,6 +208,24 @@ alerta.fire({
                   <h4 class="card-title mb-0">Listado general de los activos</h4>
                 </div>
                 <div class="card-body"> 
+                     
+                    <div class="row"> 
+                        <div class="col-md-4"> 
+                                            <div class="form-floating mt-3"> 
+                                                    <TextInput class="form-control" id="search" ref="nameinput" v-model="searchField" type="text" >
+                                                    </TextInput> 
+                                                <label for="serie">Buscar por codigo</label> 
+                                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                                            <div class=" mb-3'"> 
+                                                <label for="idambiente">Buscar por Unidad Funcional</label> 
+                                                    <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
+                                                    </SelectInputAmbiente>   
+                                            </div>
+                        </div>
+                        
+                    </div>
                   <div class="table-responsive">
                     <table
                       id="zero_config"
@@ -202,7 +234,7 @@ alerta.fire({
                       <thead>
                         <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
                           <th class="align-middle" style="text-align: center;">Activo</th>
-                          <th class="align-middle" style="text-align: center;">Cogido</th>
+                          <th class="align-middle" style="text-align: center;">Codigo</th>
                           <th class="align-middle" style="text-align: center;">Descripción</th>
                           <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
                           <th class="align-middle" style="text-align: center;">Grupo</th>
@@ -288,10 +320,18 @@ alerta.fire({
                                         </div>
 
                                         <div class="col-md-4">
-                                            <div :class="form.errors.idgrupo?'  mb-3 has-danger':'  mb-3'"> 
-                                                <label for="idgrupo">Grupo</label> 
-                                                    <SelectInputGgrupo class="form-select form-select-lg mb-3" id="idgrupo" v-model="form.idgrupo" type="text" :options="grupo" :disabled="nombreasig.length>0">
-                                                    </SelectInputGgrupo>  
+                                            <div :class="form.errors.idgrupo?'  mb-3 has-danger':'  mb-3 '"> 
+                                                <label for="idgrupo">Grupo</label>  
+                                                    <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                                        v-model="form.idgrupo"
+                                                        @change="cambiagrupo"
+                                                        ref="input" :disabled="nombreasig.length>0">  
+                                                        <option value=""  disabled>seleccione grupo</option>
+                                                        <option v-for="op in grupo" :key="op.i" :value="op.idag" :selected="op.idag==form" >
+                                                            {{ op.nomgrupo }}
+                                                        </option>
+                                                    </select>
+
                                                 <small v-show="form.errors.idgrupo" class="form-control-feedback">
                                                     {{form.errors.idgrupo}}
                                                     </small> 

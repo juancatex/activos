@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ActivoAuxiliar extends Model
 {
     use HasFactory;
-    protected $fillable = ['idgrupo','codauxiliar','nomauxiliar'];
+    protected $fillable = ['idgrupo','codauxiliar','nomauxiliar','activo'];
     protected $primaryKey = 'idauxiliar';
       
 }

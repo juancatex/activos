@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('activo_auxiliars', function (Blueprint $table) {
             $table->increments('idauxiliar');
             $table->integer('idgrupo')->unsigned(); 
-            $table->string('codauxiliar',2);
+            $table->string('codauxiliar',4);
             $table->string('nomauxiliar',50);
             $table->boolean('activo')->default(1);
             $table->timestamps();

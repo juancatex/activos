@@ -4,11 +4,6 @@ import { Head,Link,useForm,router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Paginations.vue'; 
 import TextInput from '@/Components/TextInput.vue';
 import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
-import Cropp from '@/Components/CropperImage.vue';
-import SelectInputGgrupo from '@/Components/SelectInputGgrupo.vue';
-import SelectInputAuxiliar from '@/Components/SelectInputAuxiliar.vue';
-import SelectInputUsers from '@/Components/SelectInputUsers.vue';
-import SelectInputEstados from '@/Components/SelectInputEstados.vue';
 import Swal from 'sweetalert2';
 import {ref,nextTick,watch,computed} from 'vue'; 
 import { debounce,findIndex,reduce } from 'lodash';
@@ -16,6 +11,8 @@ import moment from 'moment';
 const nameinput=ref(null); 
 const titulo=ref('');
 const searchField=ref('');
+const searchambiente=ref(null);
+const searchfecha=ref(null);
 const arrayDepreciaciones=ref([]);
 const usuarioprincipal=ref({});
 const estadoasignacion=ref([{'id':1,'name':'Bueno'},{'id':2,'name':'Regular'},{'id':3,'name':'Malo'}]);
@@ -46,7 +43,15 @@ const formasig = useForm({
 }); 
 
 watch(searchField, debounce(() => { 
-router.get('ActivoAsig', {search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos','activos']})
+router.get('Depre',  {searchambiente: searchambiente.value,search: searchField.value,searchfecha: searchfecha.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
+}, 300));
+watch(searchambiente, debounce(() => {
+// router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
+router.get('Depre', {searchambiente: searchambiente.value,search: searchField.value,searchfecha: searchfecha.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
+}, 300));
+watch(searchfecha, debounce(() => {
+// router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
+router.get('Depre', {searchambiente: searchambiente.value,search: searchField.value,searchfecha: searchfecha.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
 }, 300));
  
 const props = defineProps({
@@ -60,6 +65,9 @@ const props = defineProps({
         type: Object,
     },
     ufvfin: {
+        type: Object,
+    },
+    ambiente: {
         type: Object,
     },
         
@@ -182,16 +190,29 @@ const closeModal=()=>{
                   <h4 class="card-title mb-0">Listado general de los activos</h4>
                 </div>
                 <div class="card-body"> 
-                    <div class="col-md-6 ">
-                      
-
-
-                                            <div class="form-floating mb-3"> 
+                    <div class="row">
+                        <div class="col-md-4">
+                                             <div class="form-floating mt-3"> 
+                                                    <TextInput class="form-control" id="fechaingreso" ref="nameinput" v-model="searchfecha" type="date" >
+                                                    </TextInput> 
+                                                <label for="fechaingreso">Buscar por Fecha de Ingreso</label> 
+                                            </div>
+                        </div>
+                        <div class="col-md-4"> 
+                                            <div class="form-floating mt-3"> 
                                                     <TextInput class="form-control" id="search" ref="nameinput" v-model="searchField" type="text" >
                                                     </TextInput> 
                                                 <label for="serie">Buscar por codigo</label> 
+                                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                                            <div class=" mb-3'"> 
+                                                <label for="idambiente">Buscar por Unidad Funcional</label> 
+                                                    <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
+                                                    </SelectInputAmbiente>   
                                             </div>
-
+                        </div>
+                        
                     </div>
 
 
@@ -204,7 +225,7 @@ const closeModal=()=>{
                       <thead>
                         <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
                           <th class="align-middle" style="text-align: center;">Activo</th>
-                          <th class="align-middle" style="text-align: center;">Cogido</th> 
+                          <th class="align-middle" style="text-align: center;">Codigo</th> 
                           <th class="align-middle" style="text-align: center;">Grupo</th>
                           <th class="align-middle" style="text-align: center;">Auxiliar</th>  
                           <th class="align-middle" style="text-align: center;">Unidad Funcional</th>

@@ -8,6 +8,13 @@ use App\Http\Controllers\ActivoAsignacionController;
 use App\Http\Controllers\ActivoDevolucionController;
 use App\Http\Controllers\ActivoBajaController;
 use App\Http\Controllers\DepreController;
+use App\Http\Controllers\RolVistaController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\AmbienteController;
+use App\Http\Controllers\ActivoGrupoController;
+use App\Http\Controllers\ActivoMotivosController;
+use App\Http\Controllers\ActivoAuxiliarController;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +53,7 @@ Route::middleware('auth')->group(function () {
 
     // Route::post('activodestroy', [ActivoController::class, 'desabilitar'])->name('activodestroy');
     Route::resource('Activo', ActivoController::class);
-    Route::get('/Activos', [ActivoController::class, 'ruta'])->name('activo.lista');  
+    Route::get('/Activos', [ActivoController::class, 'index'])->name('activo.lista');  
 
     Route::resource('ActivoBaja', ActivoBajaController::class);
     Route::get('/ActivosBaja', [ActivoBajaController::class, 'index'])->name('activo.baja');  
@@ -57,7 +64,32 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('ActivoDev', ActivoDevolucionController::class); 
     Route::get('/ActivosDev', [ActivoDevolucionController::class, 'index'])->name('activo.dev'); 
+
+    Route::resource('Empresa', EmpresaController::class); 
+    Route::get('/EmpresaDatos', [EmpresaController::class, 'index'])->name('empresa.datos'); 
     
+    Route::resource('Roles', RolController::class); 
+    Route::get('/RolesDatos', [RolController::class, 'index'])->name('rol.datos'); 
+    Route::post('Rolesdestroy', [RolController::class, 'desabilitar'])->name('Rolesdestroy');
+    
+    Route::resource('Ambiente', AmbienteController::class); 
+    Route::get('/AmbienteDatos', [AmbienteController::class, 'index'])->name('ambiente.datos'); 
+    Route::post('Ambientedestroy', [AmbienteController::class, 'desabilitar'])->name('Ambientedestroy');
+
+    Route::resource('Grupo', ActivoGrupoController::class); 
+    Route::get('/GrupoDatos', [ActivoGrupoController::class, 'index'])->name('grupo.datos'); 
+    Route::post('Grupodestroy', [ActivoGrupoController::class, 'desabilitar'])->name('Grupodestroy');
+
+    Route::resource('Auxiliar', ActivoAuxiliarController::class); 
+    Route::get('/AuxDatos', [ActivoAuxiliarController::class, 'index'])->name('aux.datos'); 
+    Route::post('Auxdestroy', [ActivoAuxiliarController::class, 'desabilitar'])->name('Auxdestroy');
+
+    Route::resource('Motivo', ActivoMotivosController::class); 
+    Route::get('/MotivoDatos', [ActivoMotivosController::class, 'index'])->name('motivo.datos'); 
+    Route::post('Motivodestroy', [ActivoMotivosController::class, 'desabilitar'])->name('Motivodestroy');
+
+
+    Route::resource('Depre', DepreController::class); 
     Route::get('/ActivosDepre', [DepreController::class, 'index'])->name('activo.depre'); 
 });
 
