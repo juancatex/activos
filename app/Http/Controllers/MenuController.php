@@ -52,10 +52,14 @@ for ($mes=1; $mes <=$mesini ; $mes++) {
         $activosporbaja=0;
         $activos=Activo::where('activo',1)->where('fechaingreso', '<=',($anio-1).'-12-31')->get(); 
         foreach($activos as $act) {
+            $countdepre=depre::where('idactivo',$act->idactivo)->orderBy('gestion', 'desc')->count(); 
+           if( $countdepre>0){
             $depre=depre::where('idactivo',$act->idactivo)->orderBy('gestion', 'desc')->first();
-            if($depre->vidaf>=12){
+            if($depre->vidaf<=12){
                 $activosporbaja++; 
             }
+           }
+            
         }
        
         return Inertia::render('Dashboard', [

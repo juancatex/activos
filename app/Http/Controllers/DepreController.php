@@ -113,7 +113,8 @@ class DepreController extends Controller
                     $fechafineva=$anios.'-12-31';
                 }else{
                     $mestom=$mesin;  
-                    $fechafineva=$anios.'-'.$mesin.'-31';
+                    $feaux=$anios.'-'.$mesin.'-01';
+                    $fechafineva = date("Y-m-t", strtotime($feaux));
                 }
                $ufv_ini_data=ufv::where('fecha',$anios.'-01-01')->first(); 
                $ufv_fin_data=ufv::where('fecha',$fechafineva)->first();
