@@ -127,14 +127,14 @@ const page = usePage()
                                         <p class="mb-0">{{page.props.auth.user.email}}</p>
                                     </div>
                                 </div>  
-                                    <DropdownLink :href="route('profile.edit')" class="dropdown-item"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                    <!-- <DropdownLink :href="route('profile.edit')" class="dropdown-item"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                         class="feather feather-user feather-sm text-info me-1 ms-1">
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                    Mi perfil </DropdownLink>
+                                    Mi perfil </DropdownLink> -->
                                     <div class="dropdown-divider"></div>
                                         <DropdownLink :href="route('logout')" method="post" as="button" class="dropdown-item">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"

@@ -8,7 +8,7 @@ import Cropp from '@/Components/CropperImage.vue';
 import SelectInputGgrupo from '@/Components/SelectInputGgrupo.vue';
 import SelectInputAuxiliar from '@/Components/SelectInputAuxiliar.vue';
 import SelectInputUsers from '@/Components/SelectInputUsers.vue';
-import SelectInputEstados from '@/Components/SelectInputEstados.vue';
+import SelectInputEstados from '@/Components/SelectInputEstados.vue'; 
 import Swal from 'sweetalert2';
 import {ref,nextTick,watch,computed} from 'vue'; 
 import { debounce,findIndex,reduce } from 'lodash';
@@ -45,7 +45,7 @@ const formasig = useForm({
     obs: '',
     estadoini: null    
 }); 
-
+  
 watch(searchField, debounce(() => {
 // router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
 router.get('ActivoAsig', {searchambiente: searchambiente.value,search: searchField.value,searchfecha: searchfecha.value}, {preserveState: true, preserveScroll: true, only: ['activos','users']})
@@ -90,33 +90,9 @@ const props = defineProps({
         type: String,
     },
 });
-const openModal=(op,idactivo,codactivo,idambiente,idgrupo,idauxiliar,fechaingreso,costo,descripcion,marca,serie,imagen,obs)=>{ 
-    nextTick(()=>nameinput.value.focus());
-    operacion.value=op;  
-    if(op==1){
-        titulo.value='Crear Activo';
-        form.clearErrors();
-        form.reset();
-    }else{
-        titulo.value='Modificar Activo';
-        form.idactivo=idactivo;
-        form.codactivo=codactivo;
-        form.idambiente=idambiente;
-        form.idgrupo=idgrupo;
-        form.idauxiliar=idauxiliar;
-        form.fechaingreso=fechaingreso;
-        form.costo=costo;
-        form.descripcion=descripcion;
-        form.marca=marca;
-        form.serie=serie;
-        form.imagen=imagen;
-        form.obs=obs; 
-    }
-    $('#staticBackdrop').modal('show'); 
-};
+ 
 const openModalAsig=(idactivo,codactivo,idambiente)=>{ 
-    usuarios.value=getuser(props.users,idambiente);
-    console.log(usuarios);
+    usuarios.value=getuser(props.users,idambiente); 
 const contador = reduce(props.users, function (result, value, key) {   if (value.idu == idambiente) {  result++;  }  return result; }, 0);
 if(contador>0){
  nextTick(()=>nameinput.value.focus()); 
@@ -159,28 +135,20 @@ const guardarDatos=()=>{
 const guardarDatosAsig=()=>{
     formasig.post(route('ActivoAsig.store'),{onSuccess:()=>{ok('Creado correctamente')}  });
 };
+const reporteasignacion=(id)=>{
+    _pl.startReport();
+    axios.get("/ActivoAsigReporte").then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'sdfsdfsdf'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    // _pl.ViserReporte("/ActivoAsigReporte",'sdfsdfsdf'); 
+};
 const ok =(msj)=>{ 
     closeModal();
     Swal.fire({title:msj,icon:'success'});
 };
-const eliminarActivo=(id)=>{
-    
-const alerta=Swal.mixin({buttonsStyling:true});
-alerta.fire({
-    title:'¿Esta seguro de eliminar el registro?',
-    icon:'question',showCancelButton:true,
-    confirmButtonText:'<i class="ti-check"></i> Si',
-    cancelButtonText:'<i class="ti-close"></i> Cancelar'
-}).then(
-    (result)=>{
-        if(result.isConfirmed){ 
-            form.idactivo=id;
-            form.post(route('activodestroy'),{onSuccess:()=>{ok('Eliminado correctamente')}  });
-        } 
-    }
-);
-}; 
-      
  
    
 </script>
@@ -248,8 +216,16 @@ alerta.fire({
                         <div class="col-md-4">
                                             <div class=" mb-3'"> 
                                                 <label for="idambiente">Buscar por Unidad Funcional</label> 
-                                                    <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
-                                                    </SelectInputAmbiente>   
+                                                    <!-- <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
+                                                    </SelectInputAmbiente>    -->
+                                                    <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                                        v-model="searchambiente" 
+                                                        ref="input" >  
+                                                        <option value="0" selected>Todos</option>
+                                                        <option v-for="opt in ambiente" :key="opt.i" :value="opt.idambiente" :selected="opt.idambiente==modelValue" >
+                                                            {{ opt.nomambiente }}
+                                                        </option>
+                                                    </select>
                                             </div>
                         </div>
                         
@@ -290,7 +266,8 @@ alerta.fire({
                                         <i class="ti-user"></i>
                                     </button> 
 
-                                    <button v-else class="btn btn-outline-info  " >
+                                    <button v-else class="btn btn-outline-info  "
+                                    @click="reporteasignacion(activo.idasignacion)" >
                                         <i class="ti-file"></i>
                                     </button> 
                                  

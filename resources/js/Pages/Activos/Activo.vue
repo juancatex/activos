@@ -4,14 +4,13 @@ import { Head,Link,useForm,router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Paginations.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
-import Cropp from '@/Components/CropperImage.vue';
-import SelectInputGgrupo from '@/Components/SelectInputGgrupo.vue';
+import Cropp from '@/Components/CropperImage.vue'; 
 import SelectInputAuxiliar from '@/Components/SelectInputAuxiliar.vue';
 import SelectInputUsers from '@/Components/SelectInputUsers.vue';
-import SelectInputEstados from '@/Components/SelectInputEstados.vue';
-import Swal from 'sweetalert2';
+import SelectInputEstados from '@/Components/SelectInputEstados.vue'; 
 import {ref,nextTick,onMounted,computed,watch} from 'vue'; 
 import { isNull,debounce } from 'lodash';
+import Swal from 'sweetalert2';
 import moment from 'moment';
 const nameinput=ref(null); 
 const titulo=ref('');
@@ -50,6 +49,10 @@ function cambiagrupo(){
     form.idauxiliar=null;
     router.get('Activo', {searchaux: form.idgrupo}, {preserveState: true, preserveScroll: true, only: ['aux']});   
 }
+// function cambiaambiente(){ 
+//     form.idauxiliar=null;
+//     router.get('Activo', {searchaux: form.idgrupo}, {preserveState: true, preserveScroll: true, only: ['aux']});   
+// }
 watch(searchField, debounce(() => {
 // router.get('ActivoAsig', {search: searchField.value}, {preserveState: true})
 router.get('Activo', {searchambiente: searchambiente.value,search: searchField.value}, {preserveState: true, preserveScroll: true, only: ['activos']})
@@ -220,8 +223,16 @@ alerta.fire({
                         <div class="col-md-4">
                                             <div class=" mb-3'"> 
                                                 <label for="idambiente">Buscar por Unidad Funcional</label> 
-                                                    <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
-                                                    </SelectInputAmbiente>   
+                                                    <!-- <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
+                                                    </SelectInputAmbiente>    -->
+                                                    <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                                        v-model="searchambiente" 
+                                                        ref="input" >  
+                                                        <option value="0" selected>Todos</option>
+                                                        <option v-for="opt in ambiente" :key="opt.i" :value="opt.idambiente" :selected="opt.idambiente==modelValue" >
+                                                            {{ opt.nomambiente }}
+                                                        </option>
+                                                    </select>
                                             </div>
                         </div>
                         

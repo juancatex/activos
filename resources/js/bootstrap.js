@@ -6,8 +6,18 @@
 
 import axios from 'axios';
 window.axios = axios;
+import * as _pl from './funciones.js';
+window._pl = _pl;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; 
+window.axios.interceptors.response.use(function (response) {
+    return response
+  }, function (error) { 
+    if (error.response.status === 401) {
+        _pl.mensaje401();
+    }
+    return Promise.reject(error)
+  })
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

@@ -64,6 +64,12 @@ class ActivoController extends Controller
             'status' => session('status'),
         ]);
     }
+    public function getall(){
+       return Activo::select('idactivo','codactivo')->where('activo',1)
+        ->orderBy('idactivo')
+        ->get(); 
+    }
+   
     public function ruta(Request $request)
     {
         $request->validate([

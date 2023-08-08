@@ -19,5 +19,6 @@
         @inertia 
         <script src="/dist/libs/jquery/dist/jquery.min.js"></script>  
         <script src="/dist/libs/cropper/dist/cropper.min.js"></script>
+        <script src="/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
     </body>
 </html>

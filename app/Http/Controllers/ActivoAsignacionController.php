@@ -10,9 +10,10 @@ use App\Models\ActivoGrupo;
 use App\Models\ActivoAuxiliar;  
 use App\Clases\Menulist;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Activo;
 use App\Models\User;
-
+use PDF;
 class ActivoAsignacionController extends Controller
 {
     /**
@@ -22,7 +23,10 @@ class ActivoAsignacionController extends Controller
     {
         $listamenus = new Menulist; 
         $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
-        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar",$raw)
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar","activo_asignacions.idasignacion",$raw)
+        ->leftJoin('activo_asignacions', function($join) {
+            $join->on('activo_asignacions.idactivo', '=', 'activos.idactivo')->where('activo_asignacions.activo',1);
+          })
         ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
         ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
         ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")  ; 
@@ -106,6 +110,17 @@ class ActivoAsignacionController extends Controller
             'obs' => $request->obs 
         ]);  
         return redirect('ActivoAsig');
+    }
+
+    public function reporte(Request $request)
+    { 
+        $logo = Storage::path('fotos/logo.png');
+        $logo64 = base64_encode(Storage::get('fotos/logo.png')); 
+         
+
+        $pdf = PDF::loadView('reportes/activoAsig', ['foto'=>'data:'.mime_content_type($logo) . ';base64,' . $logo64]); 
+        // return $pdf->stream('asignacion.pdf'); 
+        return base64_encode($pdf->output());
     }
 
     /**

@@ -2,12 +2,7 @@
 import Menu from '@/Layouts/menu.vue'; 
 import { Head,Link,useForm,router } from '@inertiajs/vue3'; 
 import Pagination from '@/Components/Paginations.vue'; 
-import TextInput from '@/Components/TextInput.vue';
-import SelectInputAmbiente from '@/Components/SelectInputAmbiente.vue';
-import Cropp from '@/Components/CropperImage.vue';
-import SelectInputGgrupo from '@/Components/SelectInputGgrupo.vue';
-import SelectInputAuxiliar from '@/Components/SelectInputAuxiliar.vue';
-import SelectInputUsers from '@/Components/SelectInputUsers.vue';
+import TextInput from '@/Components/TextInput.vue'; 
 import SelectInputEstados from '@/Components/SelectInputEstados.vue';
 import Swal from 'sweetalert2';
 import {ref,nextTick,watch,computed} from 'vue'; 

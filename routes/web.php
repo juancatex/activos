@@ -46,21 +46,23 @@ Route::middleware('auth')->group(function () {
     Route::resource('User', UserController::class);
     Route::post('userdestroy', [UserController::class, 'desabilitar'])->name('userdestroy');
     Route::get('/dashboard', [MenuController::class, 'dashboard'])->name('dashboard');
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route::post('activodestroy', [ActivoController::class, 'desabilitar'])->name('activodestroy');
     Route::resource('Activo', ActivoController::class);
     Route::get('/Activos', [ActivoController::class, 'index'])->name('activo.lista');  
-
+    Route::get('/getall', [ActivoController::class, 'getall'])->name('getall');   
+     
     Route::resource('ActivoBaja', ActivoBajaController::class);
     Route::get('/ActivosBaja', [ActivoBajaController::class, 'index'])->name('activo.baja');  
     Route::post('activodestroy', [ActivoBajaController::class, 'desabilitar'])->name('activodestroy');
 
     Route::resource('ActivoAsig', ActivoAsignacionController::class); 
     Route::get('/ActivosAsig', [ActivoAsignacionController::class, 'index'])->name('activo.asig'); 
+    Route::get('/ActivoAsigReporte', [ActivoAsignacionController::class, 'reporte'])->name('ActivoAsigReporte'); 
 
     Route::resource('ActivoDev', ActivoDevolucionController::class); 
     Route::get('/ActivosDev', [ActivoDevolucionController::class, 'index'])->name('activo.dev'); 
@@ -91,6 +93,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('Depre', DepreController::class); 
     Route::get('/ActivosDepre', [DepreController::class, 'index'])->name('activo.depre'); 
+    Route::post('deprecion', [DepreController::class, 'depre']);  
+    Route::post('/trunn', [DepreController::class, 'trunn'])->name('trunn'); 
+    Route::post('/getdepre', [DepreController::class, 'getdepre'])->name('getdepre'); 
 });
 
 require __DIR__.'/auth.php';

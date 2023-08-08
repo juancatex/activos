@@ -181,8 +181,16 @@ alerta.fire({
                         <div class="col-md-4">
                                             <div class=" mb-3'"> 
                                                 <label for="idambiente">Buscar por Unidad Funcional</label> 
-                                                    <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
-                                                    </SelectInputAmbiente>   
+                                                    <!-- <SelectInputAmbiente class="form-select form-select-lg mb-3" id="idambiente" v-model="searchambiente" type="text" :options="ambiente">
+                                                    </SelectInputAmbiente>    -->
+                                                    <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                                        v-model="searchambiente" 
+                                                        ref="input" >  
+                                                        <option value="0" selected>Todos</option>
+                                                        <option v-for="opt in ambiente" :key="opt.i" :value="opt.idambiente" :selected="opt.idambiente==modelValue" >
+                                                            {{ opt.nomambiente }}
+                                                        </option>
+                                                    </select>
                                             </div>
                         </div>
                         
