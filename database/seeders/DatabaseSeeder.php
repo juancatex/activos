@@ -22,12 +22,45 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        DB::table('rols')->insert(['name'=>'Administrador','descripcionrol'=>'Administrador']);
+       /* DB::table('rols')->insert(['name'=>'Administrador','descripcionrol'=>'Administrador']);
         DB::table('rols')->insert(['name'=>'Contador','descripcionrol'=>'Contador']);
         DB::table('rols')->insert(['name'=>'Profesional 1','descripcionrol'=>'Profesional 1']);
         DB::table('rols')->insert(['name'=>'Profesional 2','descripcionrol'=>'Profesional 2']);
         DB::table('rols')->insert(['name'=>'Profesional 3','descripcionrol'=>'Profesional 3']);
-        DB::table('rols')->insert(['name'=>'Auditor','descripcionrol'=>'Auditor']);
+        DB::table('rols')->insert(['name'=>'Auditor','descripcionrol'=>'Auditor']);*/
+        DB::table('rols')->insert(['name'=>'GERENTE GENERAL','descripcionrol'=>'GERENTE GENERAL']);
+        DB::table('rols')->insert(['name'=>'ABOGADO','descripcionrol'=>'ABOGADO']);
+        DB::table('rols')->insert(['name'=>'ASIST. SECRETARIA, GERENCIA Y MENSAJERIA','descripcionrol'=>'ASIST. SECRETARIA, GERENCIA Y MENSAJERIA']);
+        DB::table('rols')->insert(['name'=>'ASISTENTE DE CREDITOS','descripcionrol'=>'ASISTENTE DE CREDITOS']);
+        DB::table('rols')->insert(['name'=>'AUDITOR INTERNO','descripcionrol'=>'AUDITOR INTERNO']);
+        DB::table('rols')->insert(['name'=>'AUXILIAR DE ARCHIVO Y CATASTRO','descripcionrol'=>'AUXILIAR DE ARCHIVO Y CATASTRO']);
+        DB::table('rols')->insert(['name'=>'AUXILIAR DE CONTABILIDAD','descripcionrol'=>'AUXILIAR DE CONTABILIDAD']);
+        DB::table('rols')->insert(['name'=>'EJECUTIVO DE CUENTAS','descripcionrol'=>'EJECUTIVO DE CUENTAS']);
+        DB::table('rols')->insert(['name'=>'ENCARGADO DE ARCHIVO Y CATASTRO','descripcionrol'=>'ENCARGADO DE ARCHIVO Y CATASTRO']);
+        DB::table('rols')->insert(['name'=>'ENCARGADO DE BASE DE DATOS E INFRAESTRUCTURA','descripcionrol'=>'ENCARGADO DE BASE DE DATOS E INFRAESTRUCTURA']);
+        DB::table('rols')->insert(['name'=>'ENCARGADO DE MORA EXTRA JUDICIAL','descripcionrol'=>'ENCARGADO DE MORA EXTRA JUDICIAL']);
+        DB::table('rols')->insert(['name'=>'ENCARGADO DE MORA JUDICIAL','descripcionrol'=>'ENCARGADO DE MORA JUDICIAL']);
+        DB::table('rols')->insert(['name'=>'ENCARGADO DE SERV.GRALES.ACT.FIJ. Y ALMAC.','descripcionrol'=>'ENCARGADO DE SERV.GRALES.ACT.FIJ. Y ALMAC.']);
+        DB::table('rols')->insert(['name'=>'ENCARGADO DE SOPORTE TECNICO','descripcionrol'=>'ENCARGADO DE SOPORTE TECNICO']);
+        DB::table('rols')->insert(['name'=>'ENCARGADO DE TESORERIA','descripcionrol'=>'ENCARGADO DE TESORERIA']);
+        DB::table('rols')->insert(['name'=>'JEFE DE ADMINISTRACIÓN Y FINANZAS','descripcionrol'=>'JEFE DE ADMINISTRACIÓN Y FINANZAS']);
+        DB::table('rols')->insert(['name'=>'JEFE DE AUDITORÍA INTERNA','descripcionrol'=>'JEFE DE AUDITORÍA INTERNA']);
+        DB::table('rols')->insert(['name'=>'JEFE DE CARTERA','descripcionrol'=>'JEFE DE CARTERA']);
+        DB::table('rols')->insert(['name'=>'JEFE DE CREDITOS','descripcionrol'=>'JEFE DE CREDITOS']);
+        DB::table('rols')->insert(['name'=>'JEFE DE INFORMATICA Y COMUNICACIONES','descripcionrol'=>'JEFE DE INFORMATICA Y COMUNICACIONES']);
+        DB::table('rols')->insert(['name'=>'JEFE DE RIESGOS','descripcionrol'=>'JEFE DE RIESGOS']);
+        DB::table('rols')->insert(['name'=>'JEFE LEGAL A.I.','descripcionrol'=>'JEFE LEGAL A.I.']);
+        DB::table('rols')->insert(['name'=>'RESPONSABLE DE CARTERA','descripcionrol'=>'RESPONSABLE DE CARTERA']);
+        DB::table('rols')->insert(['name'=>'RESPONSABLE DE LIMPIEZA','descripcionrol'=>'RESPONSABLE DE LIMPIEZA']);
+        DB::table('rols')->insert(['name'=>'RESPONSABLE DE LIQUIDACIONES','descripcionrol'=>'RESPONSABLE DE LIQUIDACIONES']);
+        DB::table('rols')->insert(['name'=>'SECRETARIA DE GERENCIA GENERAL','descripcionrol'=>'SECRETARIA DE GERENCIA GENERAL']);
+        DB::table('rols')->insert(['name'=>'SERENO SACABA COCHABAMBA','descripcionrol'=>'SERENO SACABA COCHABAMBA']);
+        DB::table('rols')->insert(['name'=>'SUPERVISOR DE CONTABILIDAD','descripcionrol'=>'SUPERVISOR DE CONTABILIDAD']);
+        DB::table('rols')->insert(['name'=>'SUPERVISOR DE CONTROL INTERNO Y NORMAS','descripcionrol'=>'SUPERVISOR DE CONTROL INTERNO Y NORMAS']);
+        DB::table('rols')->insert(['name'=>'SUPERVISOR DE RECURSOS HUMANOS','descripcionrol'=>'SUPERVISOR DE RECURSOS HUMANOS']);
+        DB::table('rols')->insert(['name'=>'SUPERVISOR DE SEGURIDAD DE LA INFORMACION ','descripcionrol'=>'SUPERVISOR DE SEGURIDAD DE LA INFORMACION ']);
+        DB::table('rols')->insert(['name'=>'SUPERVISOR DEL DEPARTAMENTO DE SEGUROS','descripcionrol'=>'SUPERVISOR DEL DEPARTAMENTO DE SEGUROS']);
+
 
 
         //INTERNOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
@@ -81,7 +114,7 @@ class DatabaseSeeder extends Seeder
         'ciudad'=>'La paz',
         'web'=>'www.mugebusch.org',]); 
 
-        DB::table('ambientes')->insert(['codambiente'=>'01','nomambiente'=>'GERENCIA']);
+      /*  DB::table('ambientes')->insert(['codambiente'=>'01','nomambiente'=>'GERENCIA']);
         DB::table('ambientes')->insert(['codambiente'=>'02','nomambiente'=>'ARCHIVO GENERAL']);
         DB::table('ambientes')->insert(['codambiente'=>'03','nomambiente'=>'DIRECCIÓN FINANCIERA']);
         DB::table('ambientes')->insert(['codambiente'=>'04','nomambiente'=>'ASESORÍA JURIDICA']);
@@ -110,11 +143,47 @@ class DatabaseSeeder extends Seeder
         DB::table('ambientes')->insert(['codambiente'=>'27','nomambiente'=>'AUXILIAR DE PRESTACIONES']);
         DB::table('ambientes')->insert(['codambiente'=>'28','nomambiente'=>'UNIDAD DE SISTEMAS']);
         DB::table('ambientes')->insert(['codambiente'=>'29','nomambiente'=>'COMITE ELECTORAL']); 
-        DB::table('ambientes')->insert(['codambiente'=>'30','nomambiente'=>'DEPOSITO']); 
+        DB::table('ambientes')->insert(['codambiente'=>'30','nomambiente'=>'DEPOSITO']); */
 
-        DB::table('activo_grupos')->insert(['codgrupo'=>'01','nomgrupo'=>'Edificaciones','vida'=>40]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'02','nomgrupo'=>'Muebles y enseres de oficina','vida'=>10]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'03','nomgrupo'=>'Maquinaria en general','vida'=>8]);
+        DB::table('ambientes')->insert(['codambiente'=>'01','nomambiente'=>'GERENCIA GENERAL ']);
+        DB::table('ambientes')->insert(['codambiente'=>'02','nomambiente'=>' ARCHIVO Y CATASTRO']);
+        DB::table('ambientes')->insert(['codambiente'=>'03','nomambiente'=>'ARCHIVO JJ PEREZ']);
+        DB::table('ambientes')->insert(['codambiente'=>'04','nomambiente'=>'ASISTENTE GERENCIA GENERAL']);
+        DB::table('ambientes')->insert(['codambiente'=>'05','nomambiente'=>'AUDITORIA INTERNA']);
+        DB::table('ambientes')->insert(['codambiente'=>'06','nomambiente'=>'AUDITORIA INTERNA 502']);
+        DB::table('ambientes')->insert(['codambiente'=>'07','nomambiente'=>'COCINA']);
+        DB::table('ambientes')->insert(['codambiente'=>'08','nomambiente'=>'COMEDOR HOTEL']);
+        DB::table('ambientes')->insert(['codambiente'=>'09','nomambiente'=>'DEPARTAMENTO ADMINISTRATIVO FINANCIERO ']);
+        DB::table('ambientes')->insert(['codambiente'=>'10','nomambiente'=>'DEPARTAMENTO DE CARTERA']);
+        DB::table('ambientes')->insert(['codambiente'=>'11','nomambiente'=>'DEPARTAMENTO DE CREDITO']);
+        DB::table('ambientes')->insert(['codambiente'=>'12','nomambiente'=>'DEPARTAMENTO DE INFORMATICA Y COMUNICACIONES']);
+        DB::table('ambientes')->insert(['codambiente'=>'13','nomambiente'=>'DEPARTAMENTO DE MORA Y EXTRAJUDICIAL']);
+        DB::table('ambientes')->insert(['codambiente'=>'14','nomambiente'=>'DEPARTAMENTO DE SEGUROS']);
+        DB::table('ambientes')->insert(['codambiente'=>'15','nomambiente'=>'DEPARTAMENTO LEGAL']);
+        DB::table('ambientes')->insert(['codambiente'=>'16','nomambiente'=>'DEPOSITO DE SISTEMA 501']);
+        DB::table('ambientes')->insert(['codambiente'=>'17','nomambiente'=>'DEPOSITO JJ. PÉREZ']);
+        DB::table('ambientes')->insert(['codambiente'=>'18','nomambiente'=>'GERENCIA GENERAL ']);
+        DB::table('ambientes')->insert(['codambiente'=>'19','nomambiente'=>'HOTEL DEPOSITO DE ACTIVOS FIJOS Y ALMACENES']);
+        DB::table('ambientes')->insert(['codambiente'=>'20','nomambiente'=>'J. J PEREZ - AUDITORIA INTERNA']);
+        DB::table('ambientes')->insert(['codambiente'=>'21','nomambiente'=>'JJ PEREZ']);
+        DB::table('ambientes')->insert(['codambiente'=>'22','nomambiente'=>'JJ. PEREZ CPD']);
+        DB::table('ambientes')->insert(['codambiente'=>'23','nomambiente'=>'OFICINA 505 HOTEL']);
+        DB::table('ambientes')->insert(['codambiente'=>'24','nomambiente'=>'PRESIDENCIA']);
+        DB::table('ambientes')->insert(['codambiente'=>'25','nomambiente'=>'RECURSOS HUMANOS']);
+        DB::table('ambientes')->insert(['codambiente'=>'26','nomambiente'=>'REGIONAL COCHABAMBA']);
+        DB::table('ambientes')->insert(['codambiente'=>'27','nomambiente'=>'REGIONAL SANTA CRUZ']);
+        DB::table('ambientes')->insert(['codambiente'=>'28','nomambiente'=>'SALA DE REUNIONES HOTEL']);
+        DB::table('ambientes')->insert(['codambiente'=>'29','nomambiente'=>'SALA DE REUNIONES JJ . PÉREZ']);
+        DB::table('ambientes')->insert(['codambiente'=>'30','nomambiente'=>'SECRETARIA DE GERENCIA GENERAL']);
+        DB::table('ambientes')->insert(['codambiente'=>'31','nomambiente'=>'SERVIDOR JJPEREZ']);
+       
+
+        
+        DB::table('activo_grupos')->insert(['codgrupo'=>'01','nomgrupo'=>'Muebles y enseres','vida'=>10]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'02','nomgrupo'=>'Equipos de computación','vida'=>4]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'03','nomgrupo'=>'Equipos de oficina','vida'=>8]);
+
+      /*  DB::table('activo_grupos')->insert(['codgrupo'=>'03','nomgrupo'=>'Maquinaria en general','vida'=>8]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'04','nomgrupo'=>'Equipos e instalaciones','vida'=>8]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'05','nomgrupo'=>'Barcos y lanchas en general','vida'=>10]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'06','nomgrupo'=>'Vehículos automotores','vida'=>5]);
@@ -123,8 +192,7 @@ class DatabaseSeeder extends Seeder
         DB::table('activo_grupos')->insert(['codgrupo'=>'09','nomgrupo'=>'Maquinaria agrícola','vida'=>4]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'10','nomgrupo'=>'Animales de trabajo','vida'=>4]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'11','nomgrupo'=>'Herramientas en general','vida'=>4]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'12','nomgrupo'=>'Reproductores y hembras pedigree puros por cruza','vida'=>8]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'13','nomgrupo'=>'Equipos de computación','vida'=>4]);
+        DB::table('activo_grupos')->insert(['codgrupo'=>'12','nomgrupo'=>'Reproductores y hembras pedigree puros por cruza','vida'=>8]); 
         DB::table('activo_grupos')->insert(['codgrupo'=>'14','nomgrupo'=>'Canales de regadío y pozos','vida'=>20]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'15','nomgrupo'=>'Estanques, bañaderos y abrevaderos','vida'=>10]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'16','nomgrupo'=>'Alambrados, tranqueras y vallas','vida'=>10]);
@@ -142,8 +210,8 @@ class DatabaseSeeder extends Seeder
         DB::table('activo_grupos')->insert(['codgrupo'=>'28','nomgrupo'=>'Líneas de Recolección de industria Petrolera.','vida'=>5]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'29','nomgrupo'=>'Equipos de campo de la industria Petrolera','vida'=>8]);
         DB::table('activo_grupos')->insert(['codgrupo'=>'30','nomgrupo'=>'Plantas de Procesamiento de Industria Petrolera','vida'=>8]);
-        DB::table('activo_grupos')->insert(['codgrupo'=>'31','nomgrupo'=>'Ductos de la industria petrolera','vida'=>10]);
-        
+        DB::table('activo_grupos')->insert(['codgrupo'=>'31','nomgrupo'=>'Ductos de la industria petrolera','vida'=>10]);*/
+        /*
  
         DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'01','nomauxiliar'=>'ESCRITORIO DE MADERA']);
         DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'02','nomauxiliar'=>'ESTANTE DE MADERA']);
@@ -262,7 +330,98 @@ class DatabaseSeeder extends Seeder
         DB::table('activo_auxiliars')->insert(['idgrupo'=>20,'codauxiliar'=>'08','nomauxiliar'=>'ALMOHADA']);
         DB::table('activo_auxiliars')->insert(['idgrupo'=>20,'codauxiliar'=>'09','nomauxiliar'=>'FRAZADA CON DISEÑO']);
         DB::table('activo_auxiliars')->insert(['idgrupo'=>20,'codauxiliar'=>'10','nomauxiliar'=>'SÁBANA DE TRES PIEZAS']);
-        DB::table('activo_auxiliars')->insert(['idgrupo'=>20,'codauxiliar'=>'11','nomauxiliar'=>'COLCHACAMA']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>20,'codauxiliar'=>'11','nomauxiliar'=>'COLCHACAMA']);*/
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'01','nomauxiliar'=>'Sofá de Recepción']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'02','nomauxiliar'=>'Mesa de Centro']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'03','nomauxiliar'=>'Sillón de Espera']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'04','nomauxiliar'=>'Banco Decorativo']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'05','nomauxiliar'=>'Taburetes Altos']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'06','nomauxiliar'=>'Cómoda de Almacenamiento']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'07','nomauxiliar'=>'Espejo de Pared']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'08','nomauxiliar'=>'Lámpara de Pie']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'09','nomauxiliar'=>'Mesita Auxiliar']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'10','nomauxiliar'=>'Estante Flotante']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'11','nomauxiliar'=>'Vitrina de Exhibición']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'12','nomauxiliar'=>'Mueble de TV']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'13','nomauxiliar'=>'Carro de Servicio']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'14','nomauxiliar'=>'Separador de Ambientes']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'15','nomauxiliar'=>'Tocador con Espejo']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'16','nomauxiliar'=>'Perchero de Pared']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'17','nomauxiliar'=>'Camarera de Bar']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'18','nomauxiliar'=>'Mesas Laterales']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'19','nomauxiliar'=>'Mueble Organizador']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'20','nomauxiliar'=>'Escritorio de Esquina']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'21','nomauxiliar'=>'Biblioteca de Madera']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'22','nomauxiliar'=>'Sillas de Comedor']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'23','nomauxiliar'=>'Baúl de Almacenamiento']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'24','nomauxiliar'=>'Mesas de Noche']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'25','nomauxiliar'=>'Cama con Cabecera']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'26','nomauxiliar'=>'Sillones Reclinables']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'27','nomauxiliar'=>'Escritorio Ejecutivo']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'28','nomauxiliar'=>'Mesa de Conferencia']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'29','nomauxiliar'=>'Silla Ergonómica']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>1,'codauxiliar'=>'30','nomauxiliar'=>'Mesas de Trabajo']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'01','nomauxiliar'=>'Cable HDMI']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'02','nomauxiliar'=>'Adaptador USB-C']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'03','nomauxiliar'=>'Mousepad Ergonómico']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'04','nomauxiliar'=>'Funda para Laptop']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'05','nomauxiliar'=>'Protector de Pantalla']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'06','nomauxiliar'=>'Hub USB']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'07','nomauxiliar'=>'Auriculares con Micrófono']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'08','nomauxiliar'=>'Base para Laptop']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'09','nomauxiliar'=>'Paquete de Baterías Externas']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'10','nomauxiliar'=>'Maletín para Laptop']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'11','nomauxiliar'=>'Kit de Limpieza de Pantalla']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'12','nomauxiliar'=>'Protector de Teclado']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'13','nomauxiliar'=>'Docking Station']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'14','nomauxiliar'=>'Antena WiFi']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'15','nomauxiliar'=>'Tarjeta SD de 128 GB']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'16','nomauxiliar'=>'Funda para Tablet']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'17','nomauxiliar'=>'Almohadilla para Muñeca']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'18','nomauxiliar'=>'Candado de Seguridad']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'19','nomauxiliar'=>'Soporte para Teléfono']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'20','nomauxiliar'=>'Filtro de Privacidad']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'21','nomauxiliar'=>'Kit de Cables de Conexión']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'22','nomauxiliar'=>'Adaptador de Corriente Universal']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'23','nomauxiliar'=>'Lápiz Óptico']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'24','nomauxiliar'=>'Extensor de Alcance WiFi']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'25','nomauxiliar'=>'Almohadilla de Enfriamiento']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'26','nomauxiliar'=>'Funda de Cámara Web']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'27','nomauxiliar'=>'Maletín de Cables']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'28','nomauxiliar'=>'Protector de Teclado Numérico']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'29','nomauxiliar'=>'Soporte para Monitor']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>2,'codauxiliar'=>'30','nomauxiliar'=>'Cable de Carga Magnético']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'01','nomauxiliar'=>'Escritorio Ejecutivo']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'02','nomauxiliar'=>'Silla Ergonómica']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'03','nomauxiliar'=>'Archivador Metálico']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'04','nomauxiliar'=>'Teléfono VoIP']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'05','nomauxiliar'=>'Calculadora Científica']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'06','nomauxiliar'=>'Proyector Portátil']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'07','nomauxiliar'=>'Pizarra Interactiva']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'08','nomauxiliar'=>'Máquina de Café']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'09','nomauxiliar'=>'Lámpara de Escritorio']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'10','nomauxiliar'=>'Teléfono Inalámbrico']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'11','nomauxiliar'=>'Fax Multifuncional']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'12','nomauxiliar'=>'Destructor de Documentos']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'13','nomauxiliar'=>'Escáner de Documentos']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'14','nomauxiliar'=>'Rotuladora Electrónica']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'15','nomauxiliar'=>'Gabinete para Archivos']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'16','nomauxiliar'=>'Almohadilla para Mouse']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'17','nomauxiliar'=>'Carpeta Expandible']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'18','nomauxiliar'=>'Dispensador de Agua']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'19','nomauxiliar'=>'Portapapeles']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'20','nomauxiliar'=>'Papelería y Suministros']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'21','nomauxiliar'=>'Reloj de Pared']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'22','nomauxiliar'=>'Organizador de Escritorio']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'23','nomauxiliar'=>'Engrapadora de Oficina']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'24','nomauxiliar'=>'Filtro de Pantalla']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'25','nomauxiliar'=>'Silla para Visitantes']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'26','nomauxiliar'=>'Caja Fuerte']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'27','nomauxiliar'=>'Estantería de Oficina']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'28','nomauxiliar'=>'Ventilador de Escritorio']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'29','nomauxiliar'=>'Planta Decorativa']);
+        DB::table('activo_auxiliars')->insert(['idgrupo'=>3,'codauxiliar'=>'30','nomauxiliar'=>'Teléfono de Conferencia']);
+                     
 
 
 
@@ -294,7 +453,7 @@ class DatabaseSeeder extends Seeder
         $sql = file_get_contents($path);
         DB::unprepared($sql);
        
-
+/*
         $procedureDepreciar = "CREATE OR REPLACE PROCEDURE depreciar (in idactivoin int)
               BEGIN
               
@@ -369,7 +528,7 @@ class DatabaseSeeder extends Seeder
               END;"; 
               DB::unprepared($procedureDepreciar);
 
-            /*  $funciondepre="CREATE OR REPLACE FUNCTION getPrestamosmora (id int) 
+              $funciondepre="CREATE OR REPLACE FUNCTION getPrestamosmora (id int) 
               RETURNS text
               DETERMINISTIC
               BEGIN  
