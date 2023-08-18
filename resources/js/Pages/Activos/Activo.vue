@@ -159,6 +159,17 @@ alerta.fire({
     }
 );
 }; 
+
+const reporteasignacion=(id)=>{
+    _pl.startReport();
+    axios.get("/ActivoReporte").then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Reporte General de Activos Fijos'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                }); 
+};
+
       onMounted(() => {
        
       });
@@ -198,7 +209,7 @@ alerta.fire({
                   <i   class="fill-white ti-plus"></i>
                   Registrar nuevo Activo
                 </button>
-              </div>
+              </div> 
             </div>
           </div>
         </div>
@@ -291,6 +302,17 @@ alerta.fire({
                      
                     </table>
                     <pagination class="mt-6" :links="activos.links" />
+                   
+                  </div>
+                  <div class="row">
+                    <div class=" col-md-12 justify-content-end align-self-center d-none d-md-flex ">
+                        <div class="d-flex">
+                            <button class="btn btn-info" @click="reporteasignacion()">
+                                <i class="fill-white ti-file"></i>
+                                Reporte
+                            </button>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>

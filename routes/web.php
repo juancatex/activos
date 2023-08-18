@@ -55,13 +55,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('Activo', ActivoController::class);
     Route::get('/Activos', [ActivoController::class, 'index'])->name('activo.lista');  
     Route::get('/getall', [ActivoController::class, 'getall'])->name('getall');   
+    Route::get('/ActivoReporte', [ActivoController::class, 'reporte'])->name('ActivoReporte'); 
      
     Route::resource('ActivoBaja', ActivoBajaController::class);
     Route::get('/ActivosBaja', [ActivoBajaController::class, 'index'])->name('activo.baja');  
     Route::post('activodestroy', [ActivoBajaController::class, 'desabilitar'])->name('activodestroy');
 
     Route::resource('ActivoAsig', ActivoAsignacionController::class); 
-    Route::get('/ActivosAsig', [ActivoAsignacionController::class, 'index'])->name('activo.asig'); 
+    Route::get('/ActivosAsig', [ActivoAsignacionController::class, 'index'])->name('activo.asig');  
     Route::get('/ActivoAsigReporte', [ActivoAsignacionController::class, 'reporte'])->name('ActivoAsigReporte'); 
 
     Route::resource('ActivoDev', ActivoDevolucionController::class); 

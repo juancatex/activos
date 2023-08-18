@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Clases\Menulist;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class ActivoController extends Controller
 {
@@ -69,7 +70,23 @@ class ActivoController extends Controller
         ->orderBy('idactivo')
         ->get(); 
     }
-   
+    public function reporte()
+    {  
+        $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar",$raw)
+        ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
+        ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")
+        ->where('ambientes.activo',1)
+        ->where('activo_grupos.activo',1)
+        ->where('activo_auxiliars.activo',1)
+        ->where('activos.activo',1)
+        ->orderBy('activos.idactivo')
+        ->get();  
+        $pdf = PDF::loadView('reportes/activo', ['data'=>$activos]); 
+       
+        return base64_encode($pdf->output());
+    }
     public function ruta(Request $request)
     {
         $request->validate([

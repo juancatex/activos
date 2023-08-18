@@ -83,7 +83,7 @@ body {
     <main>
     <div class="body_wrapper">
         
-        <h1 style="color: #0c49a5;text-align: center;">Listado de Asignaciones de Activos Fijos </h1>
+        <h1 style="color: #0c49a5;text-align: center;">Listado General de Activos Fijos </h1>
        
  
         <table class="table">
@@ -91,12 +91,13 @@ body {
            <tr>
            <th>Nº</th> 
            <th class="align-middle" style="text-align: center;">Activo</th>
-            <th class="align-middle" style="text-align: center;">Codigo</th> 
+            <th class="align-middle" style="text-align: center;">Codigo</th>
+            <th class="align-middle" style="text-align: center;">Descripción</th>
+            <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
             <th class="align-middle" style="text-align: center;">Grupo</th>
             <th class="align-middle" style="text-align: center;">Auxiliar</th> 
             <th class="align-middle" style="text-align: center;">Fecha Ingreso</th> 
-            <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
-            <th class="align-middle" style="text-align: center;">Asignación</th>  
+            <th class="align-middle" style="text-align: center;">Costo</th>  
            </tr>
            
        </thead>
@@ -109,22 +110,14 @@ body {
                <td style="width:25px;text-align: center;">{{$i}}</td>
               
                 <td class="align-middle" style="text-align: center;"><img src="{{$activos->imagen}}" alt="activo" width="50"></td>
-                <td class="align-middle" style="text-align: center;"><b>{{ $activos->codactivo}}</b></td> 
+                <td class="align-middle" style="text-align: center;"><b>{{ $activos->codactivo}}</b></td>
+                <td class="align-middle" style="text-align: center;">{{ $activos->descripcion }}</td>
+                <td class="align-middle" style="text-align: center;">{{ $activos->nomambiente }}</td>
                 <td class="align-middle" style="text-align: center;">{{ $activos->nomgrupo }}</td>
                 <td class="align-middle" style="text-align: center;">{{ $activos->nomauxiliar }}</td>
                 <td class="align-middle" style="text-align: center;">{{ $activos->fechaingreso }}</td>
-                <td class="align-middle" style="text-align: center;">{{ $activos->nomambiente }}</td> 
-                <td class="  align-middle" style="text-align: center;">  
-              
-                
-                @if($activos->asig)
-                {{$activos->asig}}
-                    @else
-                    No Asignado
-                @endif
-
-                </td> 
-               
+                <td class="align-middle" style="width:60px;text-align: right;">{{ $activos->costo }}Bs.</td>
+                 
            </tr>
            @php 
            $i=$i+1

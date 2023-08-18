@@ -138,7 +138,7 @@ const guardarDatosAsig=()=>{
 const reporteasignacion=(id)=>{
     _pl.startReport();
     axios.get("/ActivoAsigReporte").then(function (response) { 
-                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'sdfsdfsdf'); 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Regporte de Asignaciones'); 
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -239,8 +239,7 @@ const ok =(msj)=>{
                       <thead>
                         <tr style="    background: linear-gradient(to right, rgb(1, 120, 188) 0%, rgb(0, 189, 218) 100%);color: white;">
                           <th class="align-middle" style="text-align: center;">Activo</th>
-                          <th class="align-middle" style="text-align: center;">Codigo</th>
-                          <!-- <th>Descripción</th> --> 
+                          <th class="align-middle" style="text-align: center;">Codigo</th> 
                           <th class="align-middle" style="text-align: center;">Grupo</th>
                           <th class="align-middle" style="text-align: center;">Auxiliar</th> 
                           <th class="align-middle" style="text-align: center;">Fecha Ingreso</th> 
@@ -279,6 +278,16 @@ const ok =(msj)=>{
                      
                     </table>
                     <pagination class="mt-6" :links="activos.links" />
+                  </div>
+                  <div class="row">
+                    <div class=" col-md-12 justify-content-end align-self-center d-none d-md-flex ">
+                        <div class="d-flex">
+                            <button class="btn btn-info" @click="reporteasignacion()">
+                                <i class="fill-white ti-file"></i>
+                                Reporte
+                            </button>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>
