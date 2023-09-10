@@ -80,7 +80,9 @@ body {
 
     <main>
     <div class="contenedor">
-          
+            @php 
+           $i=0; 
+           @endphp
            @foreach ($qrout as $activos)
            <div style=" border: 2px solid; margin:4px;">  
                 <table>
@@ -91,7 +93,18 @@ body {
                         <td style="text-align: center;font-weight: bold;">{{ $activos['cod']}}</td>
                     </tr>
                 </table>
-            </div> 
+            </div>
+           @php 
+           $i=$i+1
+           @endphp
+
+            @if ($i == 5)
+            @php 
+              $i=0;
+              <br>
+             @endphp
+            @endif
+
            @endforeach
            
     </div>
