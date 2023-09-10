@@ -21,7 +21,7 @@
 .table {
     border-collapse: collapse;
     width: 100%; 
-    font-size: 12px;
+    font-size: 10px;
     border: 1px solid;     
 
 }
@@ -83,20 +83,22 @@ body {
     <main>
     <div class="body_wrapper">
         
-        <h1 style="color: #0c49a5;text-align: center;">Listado de Asignaciones de Activos Fijos </h1>
+        <h1 style="color: #0c49a5;text-align: center;">Listado de Baja de Activos Fijos </h1>
        
  
         <table class="table">
        <thead>
            <tr>
-           <th>Nº</th> 
-           <th class="align-middle" style="text-align: center;">Activo</th>
+           <th>Nº</th>  
             <th class="align-middle" style="text-align: center;">Codigo</th> 
             <th class="align-middle" style="text-align: center;">Grupo</th>
             <th class="align-middle" style="text-align: center;">Auxiliar</th> 
+            <th class="align-middle" style="text-align: center;">Unidad Funcional</th> 
             <th class="align-middle" style="text-align: center;">Fecha Ingreso</th> 
-            <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
-            <th class="align-middle" style="text-align: center;">Asignación</th>  
+            <th class="align-middle" style="text-align: center;">Fecha Baja</th> 
+            <th class="align-middle" style="text-align: center;">No de Orden</th> 
+            <th class="align-middle" style="text-align: center;">Motivo</th> 
+            <th class="align-middle" style="text-align: center;">Observacioens</th> 
            </tr>
            
        </thead>
@@ -106,25 +108,17 @@ body {
            @endphp
            @foreach ($data as $activos)
            <tr>
-               <td style="width:25px;text-align: center;">{{$i}}</td>
-              
-                <td class="align-middle" style="text-align: center;"><img src="{{$activos->imagen}}" alt="activo" width="50"></td>
+               <td style="width:25px;text-align: center;">{{$i}}</td> 
                 <td class="align-middle" style="text-align: center;"><b>{{ $activos->codactivo}}</b></td> 
                 <td class="align-middle" style="text-align: center;">{{ $activos->nomgrupo }}</td>
-                <td class="align-middle" style="text-align: center;">{{ $activos->nomauxiliar }}</td>
-                <td class="align-middle" style="text-align: center;">{{ $activos->fechaingreso }}</td>
+                <td class="align-middle" style="text-align: center;">{{ $activos->nomauxiliar }}</td> 
                 <td class="align-middle" style="text-align: center;">{{ $activos->nomambiente }}</td> 
-                <td class="  align-middle" style="text-align: center;">  
-              
+                <td class="align-middle" style="text-align: center;">{{ $activos->fechaingreso }}</td>
+                <td class="align-middle" style="text-align: center;">{{ $activos->fechabaja }}</td>
+                <td class="align-middle" style="text-align: center;">{{ $activos->nrordenbaja }}</td>
+                <td class="align-middle" style="text-align: center;">{{ $activos->nommotivo }}</td>
+                <td class="align-middle" style="text-align: left;">{{ $activos->obsbaja }}</td>
                 
-                @if($activos->asig)
-                {{$activos->asig}}
-                    @else
-                    No Asignado
-                @endif
-
-                </td> 
-               
            </tr>
            @php 
            $i=$i+1
@@ -140,7 +134,7 @@ body {
          <table style=" margin: 0 auto;">
         <tr style="text-align: center;"><td>__________________________</td></tr> 
         <tr style="text-align: center;"><td>Responsable de Activos Fijos</td></tr>
-        </table>        
+        </table>      
     </div>
     </main>
 </body>

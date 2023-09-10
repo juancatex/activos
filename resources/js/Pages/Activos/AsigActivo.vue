@@ -16,8 +16,8 @@ import moment from 'moment';
 const nameinput=ref(null); 
 const titulo=ref('');
 const searchField=ref('');
-const searchambiente=ref(null);
-const searchfecha=ref(null);
+const searchambiente=ref('');
+const searchfecha=ref('');
 const usuarios=ref([]);
 const estadoasignacion=ref([{'id':1,'name':'Bueno'},{'id':2,'name':'Regular'},{'id':3,'name':'Malo'}]);
 const operacion=ref(1);  
@@ -63,6 +63,24 @@ const codigo = computed(() => {
     return 'MUG'+(props.lastid>9?props.lastid:'0'+props.lastid)+(form.idambiente!=null?(form.idambiente>9?form.idambiente:'0'+form.idambiente):'')+
    (form.idgrupo!=null? (form.idgrupo>9?form.idgrupo:'0'+form.idgrupo):'')+
     (form.idauxiliar!=null?(form.idauxiliar>9?form.idauxiliar:'0'+form.idauxiliar):'');
+});
+const asigcount = computed(() => {
+    var count=0;
+    props.activos.data.forEach(element => { 
+        if (element['idasignacion'] != null) {
+            count++;
+        }
+    });
+    return count;
+});
+const asigpendiente = computed(() => {
+    var count3=0;
+    props.activos.data.forEach(elementw => { 
+        if (elementw['idasignacion'] == null) {
+            count3++;
+        }
+    });
+    return count3;
 });
 const props = defineProps({
     menus: {
@@ -135,9 +153,32 @@ const guardarDatos=()=>{
 const guardarDatosAsig=()=>{
     formasig.post(route('ActivoAsig.store'),{onSuccess:()=>{ok('Creado correctamente')}  });
 };
+const reporteasignacionid=(id)=>{
+    _pl.startReport();
+    var url= '/ActivoAsigReporteid?id=' +id;
+    axios.get(url).then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Regporte de Asignaciones'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    // _pl.ViserReporte("/ActivoAsigReporte",'sdfsdfsdf'); 
+};
 const reporteasignacion=(id)=>{
     _pl.startReport();
-    axios.get("/ActivoAsigReporte").then(function (response) { 
+    var url= '/ActivoAsigReporte?search=' + searchField.value + '&searchambiente='+ searchambiente.value + '&searchfecha='+ searchambiente.value;
+    axios.get(url).then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Regporte de Asignaciones'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    // _pl.ViserReporte("/ActivoAsigReporte",'sdfsdfsdf'); 
+};
+const reporteNoasignacion=(id)=>{
+    _pl.startReport();
+    var url= '/ActivoNoAsigReporte?search=' + searchField.value + '&searchambiente='+ searchambiente.value + '&searchfecha='+ searchambiente.value;
+    axios.get(url).then(function (response) { 
                              _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Regporte de Asignaciones'); 
                 })
                 .catch(function (error) {
@@ -221,7 +262,7 @@ const ok =(msj)=>{
                                                     <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                                         v-model="searchambiente" 
                                                         ref="input" >  
-                                                        <option value="0" selected>Todos</option>
+                                                        <option value="" selected>Todos</option>
                                                         <option v-for="opt in ambiente" :key="opt.i" :value="opt.idambiente" :selected="opt.idambiente==modelValue" >
                                                             {{ opt.nomambiente }}
                                                         </option>
@@ -266,12 +307,10 @@ const ok =(msj)=>{
                                     </button> 
 
                                     <button v-else class="btn btn-outline-info  "
-                                    @click="reporteasignacion(activo.idasignacion)" >
+                                    @click="reporteasignacionid(activo.idasignacion)" >
                                         <i class="ti-file"></i>
                                     </button> 
-                                 
-
-                                    
+                                  
                             </td> 
                         </tr>
                       </tbody>
@@ -279,14 +318,22 @@ const ok =(msj)=>{
                     </table>
                     <pagination class="mt-6" :links="activos.links" />
                   </div>
+                
                   <div class="row">
                     <div class=" col-md-12 justify-content-end align-self-center d-none d-md-flex ">
-                        <div class="d-flex">
-                            <button class="btn btn-info" @click="reporteasignacion()">
+                        <div v-if="asigpendiente>0"  class="d-flex m-1">
+                            <button class="btn btn-warning" @click="reporteNoasignacion()">
                                 <i class="fill-white ti-file"></i>
-                                Reporte
+                                Reporte de Asignaciones pendientes
                             </button>
                         </div>
+                        <div v-if="asigcount>0" class="d-flex m-1" >
+                            <button class="btn btn-info" @click="reporteasignacion()">
+                                <i class="fill-white ti-file"></i>
+                                Reporte de Asignaciones
+                            </button>
+                        </div>
+                       
                     </div>
                   </div>
                 </div>

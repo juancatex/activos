@@ -12,7 +12,7 @@ import { debounce,findIndex,reduce } from 'lodash';
 const nameinput=ref(null); 
 const titulo=ref('');     
 const searchField=ref('');
-const searchambiente=ref(null);
+const searchambiente=ref('');
 const form = useForm({
     idactivo:null,
     codactivo: '',
@@ -132,9 +132,16 @@ alerta.fire({
     }
 );
 }; 
-      onMounted(() => {
-       
-      });
+const reporteasignacion=(id)=>{
+    _pl.startReport();
+    var url= '/ActivosBajarepo?search=' + searchField.value + '&searchambiente='+ searchambiente.value;
+     axios.get(url).then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Reporte General de Activos Fijos'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                }); 
+};
 </script>
 
 <template>
@@ -186,7 +193,7 @@ alerta.fire({
                                                     <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                                         v-model="searchambiente" 
                                                         ref="input" >  
-                                                        <option value="0" selected>Todos</option>
+                                                        <option value="" selected>Todos</option>
                                                         <option v-for="opt in ambiente" :key="opt.i" :value="opt.idambiente" :selected="opt.idambiente==modelValue" >
                                                             {{ opt.nomambiente }}
                                                         </option>
@@ -248,6 +255,16 @@ alerta.fire({
                      
                     </table>
                     <pagination class="mt-6" :links="activos.links" />
+                  </div>
+                  <div class="row">
+                    <div class=" col-md-12 justify-content-end align-self-center d-none d-md-flex ">
+                         <div class="d-flex m-2">
+                            <button class="btn btn-info" @click="reporteasignacion()">
+                                <i class="fill-white ti-file"></i>
+                                Reporte
+                            </button>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -16,7 +16,7 @@ const nameinput=ref(null);
 const titulo=ref('');
 const nombreasig=ref('');
 const searchField=ref('');
-const searchambiente=ref(null);
+const searchambiente=ref('');
 const estadoasignacion=ref([{'id':1,'name':'Bueno'},{'id':2,'name':'Regular'},{'id':3,'name':'Malo'}]);
 const operacion=ref(1);  
 const form = useForm({
@@ -162,7 +162,8 @@ alerta.fire({
 
 const reporteasignacion=(id)=>{
     _pl.startReport();
-    axios.get("/ActivoReporte").then(function (response) { 
+    var url= '/ActivoReporte?search=' + searchField.value + '&searchambiente='+ searchambiente.value;
+     axios.get(url).then(function (response) { 
                              _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Reporte General de Activos Fijos'); 
                 })
                 .catch(function (error) {
@@ -170,9 +171,17 @@ const reporteasignacion=(id)=>{
                 }); 
 };
 
-      onMounted(() => {
+const generarqr=(id)=>{
+    _pl.startReport();
+    axios.get("/ActivoQr").then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Listado de Qr de Activos Fijos'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                }); 
+};
+
        
-      });
 </script>
 
 <template>
@@ -239,7 +248,7 @@ const reporteasignacion=(id)=>{
                                                     <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                                         v-model="searchambiente" 
                                                         ref="input" >  
-                                                        <option value="0" selected>Todos</option>
+                                                        <option value="" selected>Todos</option>
                                                         <option v-for="opt in ambiente" :key="opt.i" :value="opt.idambiente" :selected="opt.idambiente==modelValue" >
                                                             {{ opt.nomambiente }}
                                                         </option>
@@ -306,7 +315,13 @@ const reporteasignacion=(id)=>{
                   </div>
                   <div class="row">
                     <div class=" col-md-12 justify-content-end align-self-center d-none d-md-flex ">
-                        <div class="d-flex">
+                        <div class="d-flex m-2">
+                            <button class="btn btn-success" @click="generarqr()">
+                                <i class="fill-white ti-export"></i>
+                                Generar QRs
+                            </button>
+                        </div>
+                        <div class="d-flex m-2">
                             <button class="btn btn-info" @click="reporteasignacion()">
                                 <i class="fill-white ti-file"></i>
                                 Reporte

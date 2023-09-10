@@ -1,2 +1,5 @@
 https://www.geeksforgeeks.org/how-to-install-php-gd-in-xampp/
 habilitar The PHP GD extension is required, but is not installed.
+
+https://phpandmysql.com/extras/install-imagemagick-and-imagick-xampp/
+habilitar imagick

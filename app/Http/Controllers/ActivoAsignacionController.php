@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Activo;
 use App\Models\User;
+use App\Models\depre;
 use PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode; 
+
 class ActivoAsignacionController extends Controller
 {
     /**
@@ -113,21 +116,89 @@ class ActivoAsignacionController extends Controller
     }
 
    
-    public function reporte()
+    public function reporte(Request $request)
+    { 
+        $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar","activo_asignacions.idasignacion",$raw)
+        ->join("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
+        ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
+        ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")  ; 
+        if(!empty($request->search)){ 
+            $activos= $activos->where('activos.codactivo','like',"%$request->search%") ; 
+        }
+        if(!empty($request->searchambiente)){ 
+            $activos= $activos->where('activos.idambiente','=',$request->searchambiente); 
+        }
+        if(!empty($request->searchfecha)){ 
+            $activos= $activos->where('activos.fechaingreso','=',$request->searchfecha); 
+        }
+        $activos= $activos ->where('ambientes.activo',1)
+        ->where('activo_grupos.activo',1)
+        ->where('activo_asignacions.activo',1)
+        ->where('activo_auxiliars.activo',1)
+        ->where('activos.activo',1) ->orderBy('activos.idactivo')->get();  
+        $pdf = PDF::loadView('reportes/activoAsig', ['data'=>$activos]); 
+       
+        return base64_encode($pdf->output());
+        
+    }
+    public function reportesinasig(Request $request)
     { 
         $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
         $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar","activo_asignacions.idasignacion",$raw)
         ->leftJoin('activo_asignacions', function($join) {
             $join->on('activo_asignacions.idactivo', '=', 'activos.idactivo')->where('activo_asignacions.activo',1);
           })
+          ->whereNull('activo_asignacions.idactivo')
+        // ->leftJoin("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
         ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
         ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
-        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar") 
-        ->where('ambientes.activo',1)
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")  ; 
+        if(!empty($request->search)){ 
+            $activos= $activos->where('activos.codactivo','like',"%$request->search%") ; 
+        }
+        if(!empty($request->searchambiente)){ 
+            $activos= $activos->where('activos.idambiente','=',$request->searchambiente); 
+        }
+        if(!empty($request->searchfecha)){ 
+            $activos= $activos->where('activos.fechaingreso','=',$request->searchfecha); 
+        }
+        $activos= $activos ->where('ambientes.activo',1)
         ->where('activo_grupos.activo',1)
         ->where('activo_auxiliars.activo',1)
         ->where('activos.activo',1) ->orderBy('activos.idactivo')->get();  
-        $pdf = PDF::loadView('reportes/activoAsig', ['data'=>$activos]); 
+        $pdf = PDF::loadView('reportes/activonoAsig', ['data'=>$activos]); 
+       
+        return base64_encode($pdf->output());
+        
+    }
+    public function reporteid(Request $request)
+    { 
+        $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as responsable');
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_grupos.vida","activo_auxiliars.nomauxiliar","activo_asignacions.idasignacion","activo_asignacions.estadoini","activo_asignacions.fechaini",$raw)
+        ->join("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
+        ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
+        ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")  
+        ->where('ambientes.activo',1)
+        ->where('activo_grupos.activo',1)
+        ->where('activo_auxiliars.activo',1)
+        ->where('activo_asignacions.activo',1)
+        ->where('activo_asignacions.idasignacion',$request->id)
+        ->where('activos.activo',1)->latest()->first();  
+
+        $depre= depre::where('idactivo',$activos->idactivo)->orderBy('gestion', 'desc')->first();
+        
+        // print_r( $activos);
+        $pdf = PDF::loadView('reportes/activoId', ['activos'=>$activos,'depre'=>$depre,'qrval'=>
+        QrCode::format('png')->style('round')->eye('circle')->
+        // errorCorrection('H')->
+        // mergeString(Storage::disk('public')->get('logo.png'), .3, true)->
+        eyeColor(0, 32, 93, 157, 0, 157, 225)->
+        eyeColor(1, 32, 93, 157, 0, 157, 225)->
+        eyeColor(2, 32, 93, 157, 0, 157, 225)->
+        color(32, 93, 157)->size(70)->generate($activos->idactivo.'|'.$activos->idambiente.'|'.$activos->idgrupo.'|'.$activos->idauxiliar)]); 
        
         return base64_encode($pdf->output());
         

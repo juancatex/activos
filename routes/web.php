@@ -39,7 +39,9 @@ Route::get('/', function () {
         return Inertia::render('Auth/Login');
     }
 });
-
+Route::fallback(function () {
+    return redirect('/');
+});
  
 Route::middleware('auth')->group(function () {
     Route::get('/Users', [UserController::class, 'ruta'])->name('empresa.personal'); 
@@ -56,17 +58,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/Activos', [ActivoController::class, 'index'])->name('activo.lista');  
     Route::get('/getall', [ActivoController::class, 'getall'])->name('getall');   
     Route::get('/ActivoReporte', [ActivoController::class, 'reporte'])->name('ActivoReporte'); 
+    Route::get('/ActivoQr', [ActivoController::class, 'qr'])->name('ActivoQr'); 
      
     Route::resource('ActivoBaja', ActivoBajaController::class);
     Route::get('/ActivosBaja', [ActivoBajaController::class, 'index'])->name('activo.baja');  
+    Route::get('/ActivosBajarepo', [ActivoBajaController::class, 'reporte'])->name('ActivosBajarepo');  
     Route::post('activodestroy', [ActivoBajaController::class, 'desabilitar'])->name('activodestroy');
 
     Route::resource('ActivoAsig', ActivoAsignacionController::class); 
     Route::get('/ActivosAsig', [ActivoAsignacionController::class, 'index'])->name('activo.asig');  
     Route::get('/ActivoAsigReporte', [ActivoAsignacionController::class, 'reporte'])->name('ActivoAsigReporte'); 
+    Route::get('/ActivoNoAsigReporte', [ActivoAsignacionController::class, 'reportesinasig'])->name('ActivoNoAsigReporte'); 
+    Route::get('/ActivoAsigReporteid', [ActivoAsignacionController::class, 'reporteid'])->name('ActivoAsigReporteid'); 
 
     Route::resource('ActivoDev', ActivoDevolucionController::class); 
     Route::get('/ActivosDev', [ActivoDevolucionController::class, 'index'])->name('activo.dev'); 
+    Route::get('/ActivosDevReporte', [ActivoDevolucionController::class, 'reporte'])->name('ActivosDevReporte'); 
 
     Route::resource('Empresa', EmpresaController::class); 
     Route::get('/EmpresaDatos', [EmpresaController::class, 'index'])->name('empresa.datos'); 
@@ -97,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::post('deprecion', [DepreController::class, 'depre']);  
     Route::post('/trunn', [DepreController::class, 'trunn'])->name('trunn'); 
     Route::post('/getdepre', [DepreController::class, 'getdepre'])->name('getdepre'); 
+    Route::get('/Deprereporte', [DepreController::class, 'reporte'])->name('Deprereporte'); 
 });
 
 require __DIR__.'/auth.php';

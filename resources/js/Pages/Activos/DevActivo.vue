@@ -92,14 +92,7 @@ const closeModal=()=>{
     $('#staticBackdrop').modal('hide'); 
     $('#modalasignacion').modal('hide'); 
 };
-const guardarDatos=()=>{
-   if(operacion.value==1){
-    form.codactivo=codigo.value;
-    form.post(route('Activo.store'),{onSuccess:()=>{ok('Creado correctamente')}  });
-   }else{
-    form.put(route('Activo.update',form.idactivo),{onSuccess:()=>{ok('Modificado correctamente')}  });
-   }
-};
+ 
 const guardarDatosAsig=()=>{ 
     formasig.put(route('ActivoDev.update',formasig.idasignacion),{onSuccess:()=>{ok('Devuelto correctamente')}  });
 };
@@ -108,8 +101,17 @@ const ok =(msj)=>{
     Swal.fire({title:msj,icon:'success'});
 };
  
-      
- 
+const reporteasignacionid=(id)=>{
+    _pl.startReport();
+    var url= '/ActivosDevReporte?id=' +id;
+    axios.get(url).then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Regporte de Asignaciones'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    // _pl.ViserReporte("/ActivoAsigReporte",'sdfsdfsdf'); 
+};
    
 </script>
 
@@ -214,7 +216,8 @@ const ok =(msj)=>{
                                         <i class="ti-close"></i>
                                     </button> 
 
-                                    <button v-else class="btn btn-outline-info  " >
+                                    <button v-else class="btn btn-outline-info  "
+                                    @click="reporteasignacionid(activo.idasignacion)" >
                                         <i class="ti-file"></i>
                                     </button> 
                                     

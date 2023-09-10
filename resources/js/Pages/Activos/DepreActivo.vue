@@ -10,8 +10,8 @@ import moment from 'moment';
 const nameinput=ref(null); 
 const titulo=ref('');
 const searchField=ref('');
-const searchambiente=ref(null);
-const searchfecha=ref(null);
+const searchambiente=ref('');
+const searchfecha=ref('');
 const arrayDepreciaciones=ref([]);
 const usuarioprincipal=ref({});
 const estadoasignacion=ref([{'id':1,'name':'Bueno'},{'id':2,'name':'Regular'},{'id':3,'name':'Malo'}]);
@@ -183,7 +183,17 @@ async function depreciar(){
                     console.log(error);
                 }
  }
-   
+ const reporteasignacion=()=>{
+    _pl.startReport();
+    var url= '/Deprereporte?search=' + searchField.value + '&searchambiente='+ searchambiente.value + '&searchfecha='+ searchambiente.value;
+    
+     axios.get(url).then(function (response) {  
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Reporte General de Activos Fijos'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                }); 
+};  
 </script>
 
 <template>
@@ -256,7 +266,7 @@ async function depreciar(){
                                                     <select class="form-select form-select-lg mb-3 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                                         v-model="searchambiente" 
                                                         ref="input" >  
-                                                        <option value="0" selected>Todos</option>
+                                                        <option value="" selected>Todos</option>
                                                         <option v-for="opt in ambiente" :key="opt.i" :value="opt.idambiente" :selected="opt.idambiente==modelValue" >
                                                             {{ opt.nomambiente }}
                                                         </option>
@@ -309,6 +319,16 @@ async function depreciar(){
                      
                     </table>
                     <pagination class="mt-6" :links="activos.links" />
+                  </div>
+                  <div class="row">
+                    <div class=" col-md-12 justify-content-end align-self-center d-none d-md-flex "> 
+                        <div class="d-flex m-2">
+                            <button class="btn btn-info" @click="reporteasignacion()">
+                                <i class="fill-white ti-file"></i>
+                                Reporte
+                            </button>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Clases\Menulist;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class ActivoBajaController extends Controller
 {
@@ -69,6 +70,40 @@ class ActivoBajaController extends Controller
             'lastid'=>$idactivolast!=null?$idactivolast->idactivo+1:1,
             'status' => session('status'),
         ]);
+    }
+    public function reporte(Request $request)
+    {
+        $listamenus = new Menulist; 
+
+        $raw2=DB::raw('activo_asignacions.activo as asigactivo');
+        $raw=DB::raw('(SELECT concat(u.name," ",u.ap," ",u.am)  FROM activo_asignacions a,users u where a.iduser=u.id and a.activo=1 and a.idactivo=activos.idactivo) as asig');
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_auxiliars.nomauxiliar","activo_asignacions.idasignacion","activo_motivos.nommotivo",$raw,$raw2)
+        // ->leftJoin("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
+        ->leftJoin('activo_asignacions', function($join) {
+            $join->on('activo_asignacions.idactivo', '=', 'activos.idactivo')->where('activo_asignacions.activo',1);
+          })
+        ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
+        ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
+        ->join("activo_motivos","activo_motivos.idmotivo","=","activos.idmotivobaja")
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar");
+        if(!empty($request->search)){ 
+            $activos= $activos->where('activos.codactivo','like',"%$request->search%") ; 
+        }
+        if(!empty($request->searchambiente)){ 
+            $activos= $activos->where('activos.idambiente','=',$request->searchambiente); 
+        }  
+
+        $activos= $activos->where('ambientes.activo',1)
+        ->where('activo_grupos.activo',1)
+        ->where('activo_auxiliars.activo',1)
+        ->where('activos.activo',0)
+        // ->where('activo_asignacions.activo',1)
+        ->orderBy('activos.idactivo')
+        ->get(); 
+        
+        $pdf = PDF::loadView('reportes/activoBaja', ['data'=>$activos]); 
+       
+        return base64_encode($pdf->output());
     }
 
     /**

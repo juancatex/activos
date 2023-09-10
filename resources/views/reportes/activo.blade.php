@@ -25,7 +25,7 @@
     border: 1px solid;     
 
 }
-th, td {
+.table th,.table td {
   border: 1px solid black;
 }
  
@@ -126,7 +126,14 @@ body {
           
        </tbody>
    </table>
-              
+   <br><br>
+         <p>Verificado por:</p>
+         <br><br>
+         
+         <table style=" margin: 0 auto;">
+        <tr style="text-align: center;"><td>__________________________</td></tr> 
+        <tr style="text-align: center;"><td>Responsable de Activos Fijos</td></tr>
+        </table>      
     </div>
     </main>
 </body>

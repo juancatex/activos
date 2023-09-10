@@ -83,7 +83,7 @@ body {
     <main>
     <div class="body_wrapper">
         
-        <h1 style="color: #0c49a5;text-align: center;">Listado de Asignaciones de Activos Fijos </h1>
+        <h1 style="color: #0c49a5;text-align: center;">Listado de Activos Fijos sin Asignación</h1>
        
  
         <table class="table">
@@ -96,7 +96,7 @@ body {
             <th class="align-middle" style="text-align: center;">Auxiliar</th> 
             <th class="align-middle" style="text-align: center;">Fecha Ingreso</th> 
             <th class="align-middle" style="text-align: center;">Unidad Funcional</th>
-            <th class="align-middle" style="text-align: center;">Asignación</th>  
+           
            </tr>
            
        </thead>
@@ -114,16 +114,6 @@ body {
                 <td class="align-middle" style="text-align: center;">{{ $activos->nomauxiliar }}</td>
                 <td class="align-middle" style="text-align: center;">{{ $activos->fechaingreso }}</td>
                 <td class="align-middle" style="text-align: center;">{{ $activos->nomambiente }}</td> 
-                <td class="  align-middle" style="text-align: center;">  
-              
-                
-                @if($activos->asig)
-                {{$activos->asig}}
-                    @else
-                    No Asignado
-                @endif
-
-                </td> 
                
            </tr>
            @php 
@@ -140,7 +130,7 @@ body {
          <table style=" margin: 0 auto;">
         <tr style="text-align: center;"><td>__________________________</td></tr> 
         <tr style="text-align: center;"><td>Responsable de Activos Fijos</td></tr>
-        </table>        
+        </table>     
     </div>
     </main>
 </body>
