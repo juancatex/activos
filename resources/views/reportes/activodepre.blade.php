@@ -117,7 +117,7 @@ body {
                 <td class="align-middle" style="text-align: center;">{{ $activos->coeficiente}}</td>  
                 <td class="align-middle" style="text-align: center;">{{ $activos->vida}}</td>  
                 <td class="align-middle" style="text-align: center;">{{ $activos->getdepres->gestion}}</td> 
-                <td class="align-middle" style="text-align: center;">{{ $activos->getdepres->vidaf}}</td> 
+                <td class="align-middle" style="text-align: center;">{{ $activos->getdepres->vidaft}}</td> 
                 <td class="align-middle" style="text-align: center;">{{ $activos->getdepres->acu}} </td> 
                 <td class="align-middle" style="text-align: right;">{{ $activos->getdepres->valor}} Bs.</td> 
                 </tr> 

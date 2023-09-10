@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/Users', [UserController::class, 'ruta'])->name('empresa.personal'); 
     Route::resource('User', UserController::class);
     Route::post('userdestroy', [UserController::class, 'desabilitar'])->name('userdestroy');
+    Route::get('/UserReportActivos', [UserController::class, 'reporte'])->name('UserReportActivos');
     Route::get('/dashboard', [MenuController::class, 'dashboard'])->name('dashboard');
     // Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

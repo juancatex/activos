@@ -60,6 +60,15 @@ class DepreController extends Controller
             'ufvfin' => $ufvfin, 
         ]);
     }
+    function getanios($meses){
+        $anios=0;
+        $outmeses=$meses;
+        while ($outmeses>=12) {
+            $anios++;
+            $outmeses-=12; 
+        } 
+          return $anios>0?($anios."años y ".$outmeses."meses"):$outmeses." meses"; 
+       }
     public function reporte(Request $request)
     {
         $listamenus = new Menulist; 
@@ -85,6 +94,12 @@ class DepreController extends Controller
         ->where('activo_grupos.activo',1)
         ->where('activo_auxiliars.activo',1)
         ->where('activos.activo',1)->get(); 
+
+        foreach($activos as $act) {  
+            if(!is_null($act->getdepres)){ 
+                $act->getdepres->vidaft=$this->getanios($act->getdepres->vidaf);
+            }
+        }
          
         $pdf = PDF::loadView('reportes/activodepre', ['data'=>$activos]);  
         return base64_encode($pdf->output());

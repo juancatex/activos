@@ -8,10 +8,12 @@ use Inertia\Response;
 use App\Clases\Menulist;
 use App\Models\User;
 use App\Models\Rol;
-// use App\Models\Unidad;
+use App\Models\Activo; 
 use App\Models\Ambiente;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use PDF;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -66,6 +68,48 @@ class UserController extends Controller
         $user->activo = 0; 
         $user->save(); 
         return redirect('User');
+    }
+    function getanios($meses){
+        $anios=0;
+        $outmeses=$meses;
+        while ($outmeses>=12) {
+            $anios++;
+            $outmeses-=12; 
+        } 
+          return $anios>0?($anios."años y ".$outmeses."meses"):$outmeses." meses"; 
+       }
+    public function reporte(Request $request){
+       
+        $activos= Activo::select("activos.*","ambientes.nomambiente","activo_grupos.nomgrupo","activo_grupos.vida",
+        "activo_auxiliars.nomauxiliar","activo_asignacions.idasignacion","activo_asignacions.estadoini","activo_asignacions.fechaini")
+         ->join("activo_asignacions","activo_asignacions.idactivo","=","activos.idactivo")
+        ->join("ambientes","ambientes.idambiente","=","activos.idambiente")
+        ->join("activo_grupos","activo_grupos.idag","=","activos.idgrupo")
+        ->join("activo_auxiliars","activo_auxiliars.idauxiliar","=","activos.idauxiliar")  
+        ->where('activos.activo',1)
+        ->where('ambientes.activo',1)
+        ->where('activo_grupos.activo',1)
+        ->where('activo_auxiliars.activo',1)
+        ->where('activo_asignacions.activo',1)
+        ->where('activo_asignacions.iduser',$request->id)->get();
+
+        foreach($activos as $act) { 
+           
+            if(is_null($act->getdepres)){
+                $act->vidaft="No generado";
+            }else{
+                $act->getdepres->vidaft=$this->getanios($act->getdepres->vidaf);
+            }
+        }
+        Carbon::setlocale(config('app.locale'));
+        $date = Carbon::now();
+
+
+        $user=User::where('id',$request->id)->first();
+ 
+        $pdf = PDF::loadView('reportes/activouser', ['data'=>$activos,'user'=>$user ,'date'=>$date->translatedFormat('j \de F \de Y')]); 
+       
+        return base64_encode($pdf->output());
     }
     public function update(Request $request)
     {

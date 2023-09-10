@@ -103,6 +103,17 @@ alerta.fire({
     }
 );
 };
+const reporteasignacionid=(id)=>{
+    _pl.startReport();
+    var url= '/UserReportActivos?id=' +id;
+    axios.get(url).then(function (response) { 
+                             _pl.ViserReporte(`data:application/pdf;base64,${response.data}`,'Regporte de Asignaciones'); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    // _pl.ViserReporte("/ActivoAsigReporte",'sdfsdfsdf'); 
+};
 </script>
 
 <template>
@@ -187,7 +198,10 @@ alerta.fire({
                                     <button class="btn btn-danger" @click="eliminarUser(user.id)">
                                         <i class="ti-close"></i>
                                     </button>
-                                
+                                    <button class="btn btn-info  "
+                                    @click="reporteasignacionid(user.id)" >
+                                        <i class="ti-file"></i>
+                                    </button> 
                             </td> 
                         </tr>
                       </tbody>
