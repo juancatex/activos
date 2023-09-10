@@ -152,7 +152,7 @@ body {
          <table style=" margin: 0 auto;">
         <tr style="text-align: center;"><td style="padding-right:200px">__________________________</td> <td>__________________________</td></tr>
         <tr style="text-align: center;"><td style="padding-right:200px">VERIFICADO POR</td> <td>CONFORME</td></tr>
-        <tr style="text-align: center;"><td style="padding-right:200px">Responsable de Activos Fijos</td> <td>{{ $activos->responsable }}</td></tr>
+        <tr style="text-align: center;"><td style="padding-right:200px">Responsable de Activos Fijos</td> <td>{{ $user->name }} {{ $user->ap }} {{ $user->am }}</td></tr>
         </table>     
     </div>
     </main>
